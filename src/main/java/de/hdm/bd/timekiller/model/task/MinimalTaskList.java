@@ -13,7 +13,7 @@ public class MinimalTaskList implements ITaskList {
 
     private void init() {
         taskList = new ArrayList();
-        taskList.add(new Task("Task 1"));
+        taskList.add(new Task("Task 4"));
         taskList.add(new Task("Task 2"));
         taskList.add(new Task("Task 3"));
     }
