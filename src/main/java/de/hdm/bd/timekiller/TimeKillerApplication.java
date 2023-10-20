@@ -1,7 +1,7 @@
 package de.hdm.bd.timekiller;
 
 import de.hdm.bd.timekiller.ctrl.GuiController;
-import de.hdm.bd.timekiller.model.task.MinimalTaskList;
+import de.hdm.bd.timekiller.model.task.TaskListImpl;
 import de.hdm.bd.timekiller.model.task.ITaskList;
 import java.io.IOException;
 import javafx.application.Application;
@@ -27,7 +27,7 @@ public class TimeKillerApplication extends Application {
 
         // TODO: statt der MinimalTaskList sollte eine anwendungsspezifische Liste
         // mit vollständig implementierten Task-Objekten benutzt werden.
-        ITaskList taskList = new MinimalTaskList();
+        ITaskList taskList = new TaskListImpl();
 
         ((GuiController) fxmlLoader.getController()).setInput(taskList);
         ((GuiController) fxmlLoader.getController()).switchToDataInput();

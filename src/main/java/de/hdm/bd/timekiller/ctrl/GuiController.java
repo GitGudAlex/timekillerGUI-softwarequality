@@ -1,9 +1,13 @@
 package de.hdm.bd.timekiller.ctrl;
 
+import de.hdm.bd.timekiller.customExceptions.DuplicatedNameException;
+import de.hdm.bd.timekiller.customExceptions.IllegalNameException;
 import de.hdm.bd.timekiller.model.task.ITaskList;
 import de.hdm.bd.timekiller.model.task.Task;
 import java.util.Comparator;
 import java.util.Optional;
+
+import de.hdm.bd.timekiller.model.task.TaskListImpl;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -41,7 +45,7 @@ public class GuiController {
     @FXML
     private AnchorPane aPane;
 
-    private static ITaskList taskList;
+    private static ITaskList taskList = new TaskListImpl();
 
     private ObservableList<Task> items;
 
@@ -59,16 +63,16 @@ public class GuiController {
         listView.setItems(items);
 
         listView.getSelectionModel().selectedItemProperty().addListener(
-            new ChangeListener<Task>() {
-                @Override
-                public void changed(ObservableValue<? extends Task> observable, Task oldValue,
-                                    Task newValue) {
-                    // TODO: Reaktion auf den Klick auf eine Task muss implementiert werden:
-                    // Wenn die Task gerade aktiv ist, wird sie beendet
-                    // Ansonsten wird sie aktiviert
-                    // Die Task steht in der Refernez newValue
-                }
-            });
+                new ChangeListener<Task>() {
+                    @Override
+                    public void changed(ObservableValue<? extends Task> observable, Task oldValue,
+                                        Task newValue) {
+                        // TODO: Reaktion auf den Klick auf eine Task muss implementiert werden:
+                        // Wenn die Task gerade aktiv ist, wird sie beendet
+                        // Ansonsten wird sie aktiviert
+                        // Die Task steht in der Refernez newValue
+                    }
+                });
 
         listView.setCellFactory(new TaskListCellFactory());
         helper = new PieChartHelper(pieChart, taskList);
@@ -152,7 +156,15 @@ public class GuiController {
                 Task task = null;
                 // TODO: hier sollte die Reaktion auf das Hinzufügen einer neuen Task erfolgen
                 // Dazu muss die Methode insertTask in der ITaskList aufgerufen werden
-                refreshTaskListView(task);
+                try {
+                    int taskId = taskList.insertTask(name);
+                    Task newTask = taskList.getTask(taskId);
+                    refreshTaskListView(newTask);
+                } catch (DuplicatedNameException e) {
+                    showAlert("Duplicated Name", "A task with this name already exists.");
+                } catch (IllegalNameException e) {
+                    showAlert("Invalid Name", "Please enter a valid task name.");
+                }
             }
         });
     }
@@ -172,8 +184,6 @@ public class GuiController {
         });
     }
 
-
-
     private void editTask(Task task) {
         TextInputDialog dialog = new TextInputDialog(task.toString());
         dialog.setTitle("Edit Task");
@@ -181,15 +191,26 @@ public class GuiController {
         dialog.setContentText("Task name:");
 
         dialog.showAndWait().ifPresent(name -> {
-                // TODO: hier sollte die Reaktion auf das Ändern einer Task erfolgen
-                // Dazu muss die Methode updateTask in der ITaskList aufgerufen werden
-                refreshUpdatedTask(task);
+            // TODO: hier sollte die Reaktion auf das Ändern einer Task erfolgen
+            // Dazu muss die Methode updateTask in der ITaskList aufgerufen werden
+            if(!name.equals(task.getName())){
+                try{
+                    Task updatedTask = new Task(task.getId(), name);
+                    taskList.updateTask(updatedTask);
+                    refreshUpdatedTask(updatedTask);
+                }catch (DuplicatedNameException e){
+                    showAlert("Duplicated Name", "Whoops gibts schon");
+                }catch (IllegalNameException e){
+                    showAlert("Invalid Name", "Enter a valid name!");
+                }
+            }
+            refreshUpdatedTask(task);
         });
     }
 
     private void refreshTaskListView(Task task) {
-            listView.getItems().add(task);
-            // TODO: optional: hier kann die dargestellte Liste (listView) zusätzlich sortiert werden
+        listView.getItems().add(task);
+        // TODO: optional: hier kann die dargestellte Liste (listView) zusätzlich sortiert werden
     }
 
     private void refreshDeletedTask(Task task) {
@@ -214,6 +235,15 @@ public class GuiController {
         aPane.getChildren().clear();
         aPane.getChildren().add(evaluationGridPane);
         helper.updatePieChart();
+    }
+
+    //Anzeigen von Fehlermeldungen. Muss man nicht machen, aber vllt gibts Pluspunkte :D
+    private void showAlert(String title, String content){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
     }
 
 }

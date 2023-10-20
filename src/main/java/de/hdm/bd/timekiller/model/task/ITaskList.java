@@ -1,12 +1,16 @@
 package de.hdm.bd.timekiller.model.task;
 
+import de.hdm.bd.timekiller.customExceptions.DuplicatedNameException;
+import de.hdm.bd.timekiller.customExceptions.IllegalNameException;
+
 import java.util.List;
 
 public interface ITaskList {
-        public List<Task> getAllTasks();
+        List<Task> getAllTasks();
+        Task getTask(int id);
         // TODO: Exceptions berücksichtigen
-        public int insertTask(String name);
+        int insertTask(String name) throws DuplicatedNameException, IllegalNameException;
         // TODO: Exceptions berücksichtigen
-        public int updateTask(Task task);
-        public int deleteTask(Task task);
+        void updateTask(Task task) throws DuplicatedNameException, IllegalNameException;
+        boolean deleteTask(Task task);
 }
