@@ -177,9 +177,13 @@ public class GuiController {
 
         alert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
-                // TODO: hier sollte die Reaktion auf das Löschen einer Task erfolgen
-                // Dazu muss die Methode deleteTask in der ITaskList aufgerufen werden
-                refreshDeletedTask(task);
+                boolean deleted = taskList.deleteTask(task);
+                if (deleted) {
+                    refreshDeletedTask(task);
+                    System.out.println("Delete worked" + taskList.getAllTasks());
+                } else {
+                    showAlert("Delete Failed", "Failed to delet task.");
+                }
             }
         });
     }
