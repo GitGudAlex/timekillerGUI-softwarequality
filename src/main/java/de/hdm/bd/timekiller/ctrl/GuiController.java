@@ -6,12 +6,14 @@ import de.hdm.bd.timekiller.model.task.ITaskList;
 import de.hdm.bd.timekiller.model.task.Task;
 import java.util.Comparator;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import de.hdm.bd.timekiller.model.task.TaskListImpl;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.SortedList;
 import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -154,8 +156,6 @@ public class GuiController {
         result.ifPresent(name -> {
             if (!name.equals("")) {
                 Task task = null;
-                // TODO: hier sollte die Reaktion auf das Hinzufügen einer neuen Task erfolgen
-                // Dazu muss die Methode insertTask in der ITaskList aufgerufen werden
                 try {
                     int taskId = taskList.insertTask(name);
                     Task newTask = taskList.getTask(taskId);
@@ -195,8 +195,6 @@ public class GuiController {
         dialog.setContentText("Task name:");
 
         dialog.showAndWait().ifPresent(name -> {
-            // TODO: hier sollte die Reaktion auf das Ändern einer Task erfolgen
-            // Dazu muss die Methode updateTask in der ITaskList aufgerufen werden
             if(!name.equals(task.getName())){
                 try{
                     task.setName(name);
@@ -213,6 +211,10 @@ public class GuiController {
 
     private void refreshTaskListView(Task task) {
         listView.getItems().add(task);
+        listView.getItems().sort(Comparator.comparing(Task::getName));
+        //items.sort(Comparator.comparing(Task::getName));
+        System.out.println("refreshTaskListView");
+        System.out.println(listView.getItems());
         // TODO: optional: hier kann die dargestellte Liste (listView) zusätzlich sortiert werden
     }
 

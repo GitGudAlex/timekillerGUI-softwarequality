@@ -4,6 +4,8 @@ import de.hdm.bd.timekiller.customExceptions.DuplicatedNameException;
 import de.hdm.bd.timekiller.customExceptions.IllegalNameException;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class TaskListImpl implements ITaskList {
@@ -11,9 +13,12 @@ public class TaskListImpl implements ITaskList {
     public TaskListImpl(){
         tasks = new ArrayList<>();
 
-        tasks.add(new Task(1, "Arbeit"));
-        tasks.add(new Task(2, "Studium"));
+        tasks.add(new Task(1, "Studium"));
+        tasks.add(new Task(2, "Arbeit"));
         tasks.add(new Task(3, "Sport"));
+
+        Collections.sort(tasks, Comparator.comparing(Task::getName));
+
     }
     @Override
     public List<Task> getAllTasks() {
