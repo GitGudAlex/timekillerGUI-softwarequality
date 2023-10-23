@@ -199,16 +199,15 @@ public class GuiController {
             // Dazu muss die Methode updateTask in der ITaskList aufgerufen werden
             if(!name.equals(task.getName())){
                 try{
-                    Task updatedTask = new Task(task.getId(), name);
-                    taskList.updateTask(updatedTask);
-                    refreshUpdatedTask(updatedTask);
+                    task.setName(name);
+                    taskList.updateTask(task);
+                    refreshUpdatedTask(task);
                 }catch (DuplicatedNameException e){
                     showAlert("Duplicated Name", "Whoops gibts schon");
                 }catch (IllegalNameException e){
                     showAlert("Invalid Name", "Enter a valid name!");
                 }
             }
-            refreshUpdatedTask(task);
         });
     }
 
