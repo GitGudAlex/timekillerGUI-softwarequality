@@ -1,6 +1,7 @@
 package de.hdm.bd.timekiller.ctrl;
 
 import de.hdm.bd.timekiller.model.task.ITaskList;
+import de.hdm.bd.timekiller.model.task.Task;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.PieChart;
@@ -40,8 +41,11 @@ public class PieChartHelper {
     // in der Membervariable tasks steht bereits die Refernez auf die benutzte ITaskList
     private ObservableList<PieChart.Data> getEntries() {
         ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
-        for(int i = 1; i < 4; i++) {
-            pieChartData.add(new PieChart.Data("Task " + i, i));
+        for (Task task : tasks.getAllTasks()) {
+            if (task.isActive()){
+                pieChartData.add(new PieChart.Data(task.getName(), task.getOverallDuration()));
+                System.out.println("Overallduration from task: "+ task.getName()+ " ist: "+ task.getOverallDuration());
+            }
         }
         return pieChartData;
     }
