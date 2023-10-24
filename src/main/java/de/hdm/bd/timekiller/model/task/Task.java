@@ -10,7 +10,6 @@ public class Task {
     private Date endTime;
 
 
-
     public Task(int id, String name) {
         this.id = id;
         this.name = name;
@@ -37,17 +36,20 @@ public class Task {
         if(!active){
             active = true;
             startTime = new Date();
+            System.out.println("Task start: " + startTime);
         }
     }
     public void stop(){
         if(active){
             active = false;
             endTime = new Date();
+            System.out.println("Task stop: " + endTime);
         }
     }
     public long getOverallDuration(){
         if(startTime != null && endTime != null){
-            return endTime.getTime() - startTime.getTime();
+            System.out.println((endTime.getTime() - startTime.getTime())/1000);
+            return (endTime.getTime() - startTime.getTime()) / 1000;
         }else{
             return 0;
         }
