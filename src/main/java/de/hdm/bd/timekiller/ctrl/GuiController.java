@@ -73,6 +73,15 @@ public class GuiController {
                         // Wenn die Task gerade aktiv ist, wird sie beendet
                         // Ansonsten wird sie aktiviert
                         // Die Task steht in der Refernez newValue
+                        if (newValue != null) {
+                            if (newValue.isActive()) {
+                                newValue.stop();
+                                System.out.println(newValue.getOverallDuration());
+                            } else {
+                                newValue.start();
+                                System.out.println("task aktiviert: "+ newValue);
+                            }
+                        }
                     }
                 });
 

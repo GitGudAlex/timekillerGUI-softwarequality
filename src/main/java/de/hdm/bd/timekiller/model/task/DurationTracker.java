@@ -24,7 +24,7 @@ public class DurationTracker {
     public void stop(){
         if(startTime != null){
             endTime = new Date();
-            duration += endTime.getTime() - startTime.getTime();
+            duration += (endTime.getTime() - startTime.getTime())/1000;
             startTime = null;
         }
     }
