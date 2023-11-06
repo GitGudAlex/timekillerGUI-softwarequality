@@ -10,6 +10,8 @@ public class Task {
     private Date startTime;
     private Date endTime;
 
+    private String As9da;
+
 
     public Task(int id, String name) {
         this.id = id;
