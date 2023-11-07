@@ -33,6 +33,9 @@
 
 <module name="Checker">
     <module name="TreeWalker">
+        <module name="Indentation">
+            <property name="forceStrictCondition" value="true"/>
+        </module>
         <module name="NoWhitespaceAfter"/>
         <module name="SimplifyBooleanReturn"/>
         <module name="SimplifyBooleanExpression"/>
