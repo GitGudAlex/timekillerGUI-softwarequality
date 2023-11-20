@@ -108,13 +108,14 @@ public class GuiController {
             if (empty || task == null) {
                 setText(null);
                 setGraphic(null);
-
+                pseudoClassStateChanged(HIGHLIGHTED_BACKGROUND_CLASS, false);
+                pseudoClassStateChanged(DEFAULT_BACKGROUND_CLASS, false);
             } else {
                 //TODO: hier sollte die Hintergrundfarbe passend zum aktuellen Task-Zustand gesetzt
                 // werden: Wenn die DEFAULT_BACKGROUND_CLASS true ist, werden Standard-Farben benutzt
                 // Wenn die HIGHLIGHTED_BACKGROUND_CLASS true ist, wird die in CSS definierte
                 // Highlighting-Farbe benutzt.
-                if(active) {
+                if(!task.isActive()) {
                     pseudoClassStateChanged(HIGHLIGHTED_BACKGROUND_CLASS, false);
                     pseudoClassStateChanged(DEFAULT_BACKGROUND_CLASS, true);
                     active = !active;
