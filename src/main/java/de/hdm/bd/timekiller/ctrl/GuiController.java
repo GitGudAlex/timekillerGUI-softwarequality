@@ -118,11 +118,9 @@ public class GuiController {
                 if(!task.isActive()) {
                     pseudoClassStateChanged(HIGHLIGHTED_BACKGROUND_CLASS, false);
                     pseudoClassStateChanged(DEFAULT_BACKGROUND_CLASS, true);
-                    active = !active;
                 } else {
                     pseudoClassStateChanged(HIGHLIGHTED_BACKGROUND_CLASS, true);
                     pseudoClassStateChanged(DEFAULT_BACKGROUND_CLASS, false);
-                    active = !active;
                 }
                 Label descriptionLabel = new Label(task.toString());
                 HBox hBox = new HBox();
@@ -249,7 +247,6 @@ public class GuiController {
         helper.updatePieChart();
     }
 
-    //Anzeigen von Fehlermeldungen. Muss man nicht machen, aber vllt gibts Pluspunkte :D
     private void showAlert(String title, String content){
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
