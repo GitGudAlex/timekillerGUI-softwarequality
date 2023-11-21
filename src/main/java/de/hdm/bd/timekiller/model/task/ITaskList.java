@@ -8,9 +8,7 @@ import java.util.List;
 public interface ITaskList {
         List<Task> getAllTasks();
         Task getTask(int id);
-        // TODO: Exceptions berücksichtigen
         int insertTask(String name) throws DuplicatedNameException, IllegalNameException;
-        // TODO: Exceptions berücksichtigen
         void updateTask(Task task) throws DuplicatedNameException, IllegalNameException;
         boolean deleteTask(Task task);
 }
