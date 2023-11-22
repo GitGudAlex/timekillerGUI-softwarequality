@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'application'
     id 'org.openjfx.javafxplugin' version '0.0.13'
+    id 'checkstyle'
 }
 
 group 'de.hdm.bd'
@@ -55,7 +56,35 @@ test {
     ]
 }
 
+checkstyle {
+    toolVersion "10.3.1"
+    configFile file("${project.rootDir}/config/customCheckstyle.xml")
+}
 
+tasks.withType(Checkstyle) {
+    reports {
+        xml.required = true
+        html.required = true
+        xml.destination file("$project.buildDir/reports/checkstyle/checkstyle-results.xml")
+        html.destination file("$project.buildDir/reports/checkstyle/checkstyle-results.html")
+    }
+}
+
+task customCheckstyle(type: Checkstyle) {
+    source 'src'
+    include '**/*.java'
+    exclude '**/gen/**'
+    classpath = sourceSets.main.output + configurations.implementation
+}
+
+// Mark checkstyle task as non-fatal
+checkstyleMain {
+    ignoreFailures = true
+}
+
+checkstyleTest {
+    ignoreFailures = true
+}
 
 
 
