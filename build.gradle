@@ -74,7 +74,8 @@ task customCheckstyle(type: Checkstyle) {
     source 'src'
     include '**/*.java'
     exclude '**/gen/**'
-    classpath = sourceSets.main.output + configurations.implementation
+    //classpath = sourceSets.main.output + configurations.implementation
+    classpath = files()
 }
 
 // Mark checkstyle task as non-fatal
