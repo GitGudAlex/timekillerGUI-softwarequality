@@ -32,6 +32,7 @@
 -->
 
 <module name="Checker">
+    <module name="severity" value="warning"/>
     <module name="TreeWalker">
         <module name="Indentation">
             <property name="forceStrictCondition" value="true"/>
