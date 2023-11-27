@@ -117,6 +117,16 @@ project.tasks.withType(com.github.spotbugs.snom.SpotBugsTask) {
     }
 }
 
-
-
-
+//JaCoCo
+apply plugin: 'jacoco'
+test {
+    finalizedBy jacocoTestReport
+}
+jacocoTestReport {
+    dependsOn test
+    reports {
+        xml.required = true
+        csv.required = false
+        html.outputLocation = layout.buildDirectory.dir('jacocoHtml')
+    }
+}
