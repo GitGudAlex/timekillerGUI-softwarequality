@@ -32,12 +32,12 @@ public class TaskTest {
         task.start();
 
         //Zeit simulieren
-        simulateDuration(task, 5000);
+        simulateDuration(5000);
 
         task.stop();
         assertEquals(5, task.getOverallDuration());
     }
-    private void simulateDuration(Task task, long milliseconds) {
+    private void simulateDuration(long milliseconds) {
         try {
             //Zeit simulieren
             Thread.sleep(milliseconds);

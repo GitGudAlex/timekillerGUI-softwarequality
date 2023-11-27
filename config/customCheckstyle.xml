@@ -32,7 +32,9 @@
 -->
 
 <module name="Checker">
-    <module name="severity" value="warning"/>
+    <property name="severity" value="warning"/>
+    <property name="fileExtensions" value="java, properties, xml"/>
+
     <module name="TreeWalker">
         <module name="Indentation">
             <property name="forceStrictCondition" value="true"/>
