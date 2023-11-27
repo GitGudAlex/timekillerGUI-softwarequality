@@ -3,6 +3,7 @@ plugins {
     id 'application'
     id 'org.openjfx.javafxplugin' version '0.0.13'
     id 'checkstyle'
+    id "com.github.spotbugs" version "5.0.13"
 }
 
 group 'de.hdm.bd'
@@ -85,6 +86,35 @@ checkstyleMain {
 
 checkstyleTest {
     ignoreFailures = true
+}
+
+//SpotBugs
+apply plugin: "com.github.spotbugs"
+spotbugs {
+    ignoreFailures = true
+    showStackTraces = true
+    showProgress = true
+    effort = 'max'
+    reportLevel = 'low'
+    reportsDir = file("$buildDir/reports/spotbugs")
+    maxHeapSize = '2g'
+    extraArgs = [ '-nested:false' ]
+    jvmArgs = [ '-Duser.language=de' ]
+}
+project.tasks.withType(com.github.spotbugs.snom.SpotBugsTask) {
+    group 'Verification'
+    description 'Run Spotbugs on this project.'
+    reports {
+        html {
+            required = true
+            outputLocation = file("$buildDir/reports/spotbugs/main/spotbugs.html")
+            stylesheet = 'fancy-hist.xsl'
+        }
+        xml {
+            required = true
+            outputLocation = file("$buildDir/reports/spotbugs/main/spotbugs.xml")
+        }
+    }
 }
 
 
