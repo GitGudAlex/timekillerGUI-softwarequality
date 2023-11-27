@@ -10,6 +10,8 @@ public class Task {
     private Date startTime;
     private Date endTime;
 
+    private String As9da;
+
 
     public Task(int id, String name) {
         this.id = id;
@@ -37,7 +39,6 @@ public class Task {
     public void start(){
         if(!active){
             active = true;
-            //startTime = new Date();
             durationTracker.start();
             System.out.println("Task start DurationTracker");
         }
@@ -45,20 +46,11 @@ public class Task {
     public void stop(){
         if(active){
             active = false;
-            //endTime = new Date();
             durationTracker.stop();
             System.out.println("Task stop DurationTracker");
         }
     }
     public long getOverallDuration(){
         return durationTracker.getDuration();
-        /*
-        if(startTime != null && endTime != null){
-            System.out.println((endTime.getTime() - startTime.getTime())/1000);
-            return (endTime.getTime() - startTime.getTime()) / 1000;
-        }else{
-            return 0;
-        }
-        */
     }
 }

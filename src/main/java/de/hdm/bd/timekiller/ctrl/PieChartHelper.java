@@ -43,7 +43,7 @@ public class PieChartHelper {
         ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
         for (Task task : tasks.getAllTasks()) {
             if (task.isActive()){
-                task.stop(); //Wird hier als Übergangslösung ausgeführt
+                task.stop();
                 System.out.println("active Task: "+ task);
                 pieChartData.add(new PieChart.Data(task.getName(), task.getOverallDuration()));
                 System.out.println("Overallduration from task: "+ task.getName()+ " ist: "+ task.getOverallDuration());

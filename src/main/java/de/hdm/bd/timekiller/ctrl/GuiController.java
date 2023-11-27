@@ -6,14 +6,11 @@ import de.hdm.bd.timekiller.model.task.ITaskList;
 import de.hdm.bd.timekiller.model.task.Task;
 import java.util.Comparator;
 import java.util.Optional;
-import java.util.stream.Collectors;
-
 import de.hdm.bd.timekiller.model.task.TaskListImpl;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.SortedList;
 import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -111,20 +108,19 @@ public class GuiController {
             if (empty || task == null) {
                 setText(null);
                 setGraphic(null);
-
+                pseudoClassStateChanged(HIGHLIGHTED_BACKGROUND_CLASS, false);
+                pseudoClassStateChanged(DEFAULT_BACKGROUND_CLASS, false);
             } else {
                 //TODO: hier sollte die Hintergrundfarbe passend zum aktuellen Task-Zustand gesetzt
                 // werden: Wenn die DEFAULT_BACKGROUND_CLASS true ist, werden Standard-Farben benutzt
                 // Wenn die HIGHLIGHTED_BACKGROUND_CLASS true ist, wird die in CSS definierte
                 // Highlighting-Farbe benutzt.
-                if(active) {
+                if(!task.isActive()) {
                     pseudoClassStateChanged(HIGHLIGHTED_BACKGROUND_CLASS, false);
                     pseudoClassStateChanged(DEFAULT_BACKGROUND_CLASS, true);
-                    active = !active;
                 } else {
                     pseudoClassStateChanged(HIGHLIGHTED_BACKGROUND_CLASS, true);
                     pseudoClassStateChanged(DEFAULT_BACKGROUND_CLASS, false);
-                    active = !active;
                 }
                 Label descriptionLabel = new Label(task.toString());
                 HBox hBox = new HBox();
@@ -251,7 +247,6 @@ public class GuiController {
         helper.updatePieChart();
     }
 
-    //Anzeigen von Fehlermeldungen. Muss man nicht machen, aber vllt gibts Pluspunkte :D
     private void showAlert(String title, String content){
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
