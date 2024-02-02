@@ -31,6 +31,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.text.Font;
 import javafx.util.Callback;
+import javafx.fxml.FXMLLoader;
 
 public class GuiController {
     @FXML
@@ -238,7 +239,8 @@ public class GuiController {
     public void switchToDataInput() {
         aPane.getChildren().clear();
         aPane.getChildren().add(dataInputListView);
-
+        setInput(taskList);
+        setInput(taskList);
     }
 
     @FXML
@@ -246,6 +248,8 @@ public class GuiController {
         aPane.getChildren().clear();
         aPane.getChildren().add(evaluationGridPane);
         helper.updatePieChart();
+        taskList.clearTaskList();
+
     }
 
     private void showAlert(String title, String content){

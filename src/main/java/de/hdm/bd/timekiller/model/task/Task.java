@@ -55,5 +55,6 @@ public class Task {
     }
     public void clearDuration(){
         durationTracker.reset();
+        active = false;
     }
 }

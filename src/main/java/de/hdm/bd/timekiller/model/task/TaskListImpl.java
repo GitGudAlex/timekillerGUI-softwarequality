@@ -84,4 +84,11 @@ public class TaskListImpl implements ITaskList {
     private boolean checkValidName(String name){
         return name.matches("^[a-zA-Z_][a-zA-Z0-9_]*");
     }
-}
+
+    public void clearTaskList(){
+        for (Task task : tasks) {
+        task.clearDuration();
+        }
+        }
+    }
+
