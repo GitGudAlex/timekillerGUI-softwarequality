@@ -53,4 +53,7 @@ public class Task {
     public long getOverallDuration(){
         return durationTracker.getDuration();
     }
+    public void clearDuration(){
+        durationTracker.reset();
+    }
 }

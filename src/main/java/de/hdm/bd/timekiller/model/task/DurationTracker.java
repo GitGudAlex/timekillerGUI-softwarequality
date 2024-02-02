@@ -29,6 +29,11 @@ public class DurationTracker {
         }
     }
     public long getDuration(){
+
         return duration;
+    }
+
+    public void reset(){
+        duration = 0;
     }
 }

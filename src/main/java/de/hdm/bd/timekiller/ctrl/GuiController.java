@@ -238,6 +238,7 @@ public class GuiController {
     public void switchToDataInput() {
         aPane.getChildren().clear();
         aPane.getChildren().add(dataInputListView);
+
     }
 
     @FXML
