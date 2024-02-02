@@ -47,7 +47,6 @@ public class PieChartHelper {
                 System.out.println("active Task: "+ task);
                 pieChartData.add(new PieChart.Data(task.getName(), task.getOverallDuration()));
                 System.out.println("Overallduration from task: "+ task.getName()+ " ist: "+ task.getOverallDuration());
-                task.clearDuration();
             }else if (task.getOverallDuration() != 0){
                 System.out.println("zuvor aktiver Task: "+ task);
                 pieChartData.add(new PieChart.Data(task.getName(), task.getOverallDuration()));
