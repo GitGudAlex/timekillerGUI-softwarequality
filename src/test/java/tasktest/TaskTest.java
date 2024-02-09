@@ -1,48 +1,50 @@
 package tasktest;
 
+import de.hdm.bd.timekiller.model.task.DurationTracker;
 import de.hdm.bd.timekiller.model.task.Task;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import java.util.Date;
+
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 public class TaskTest {
     @Test
     public void testStartAndStopMethods() {
-        //Hier lieber Mockito verwenden mit times1?
+        // Mock für DurationTracker erstellen
+        DurationTracker mockDurationTracker = mock(DurationTracker.class);
+
+        // Task erstellen und Mock übergeben
         Task task = new Task(1, "TestTask");
+        task.setDurationTracker(mockDurationTracker);
 
-        //Task inaktiv
-        assertFalse(task.isActive());
+        // Task sollte zu Beginn inaktiv sein
+        assertFalse("Task sollte zu Beginn inaktiv sein.", task.isActive());
 
-        //Task starten und überprüfen
+        // Task starten und überprüfen
         task.start();
-        assertTrue(task.isActive());
+        assertTrue("Task sollte aktiv sein, nachdem er gestartet wurde.", task.isActive());
+
 
         // Task stoppen und überprüfen
         task.stop();
-        assertFalse(task.isActive());
-    }
+        assertFalse("Task sollte inaktiv sein, nachdem er gestoppt wurde.", task.isActive());
 
+    }
     @Test
     public void testGetOverallDuration() {
-        //Eventuell mit Spy Milliseconds returnen?
+        // Mock für DurationTracker erstellen
+        DurationTracker mockDurationTracker = mock(DurationTracker.class);
+        when(mockDurationTracker.getDuration()).thenReturn(1000L); // Beispielwert
+
+        // Task erstellen und Mock übergeben
         Task task = new Task(1, "TestTask");
-        task.start();
+        task.setDurationTracker(mockDurationTracker);
 
-        //Zeit simulieren
-        simulateDuration(5000);
+        // Überprüfen, ob die getOverallDuration den Wert des DurationTrackers zurückgibt
+        assertEquals(1000L, task.getOverallDuration());
 
-        task.stop();
-        assertEquals(5, task.getOverallDuration());
     }
-    private void simulateDuration(long milliseconds) {
-        try {
-            //Zeit simulieren
-            Thread.sleep(milliseconds);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
+
 }

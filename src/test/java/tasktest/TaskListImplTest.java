@@ -6,9 +6,12 @@ import de.hdm.bd.timekiller.model.task.Task;
 import de.hdm.bd.timekiller.model.task.TaskListImpl;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -124,6 +127,25 @@ public class TaskListImplTest {
         // Ungültige Eingabe: Löscht eine nicht existierende Aufgabe
         Task nonExistingTask = new Task(999, "NonExistingTask");
         assertFalse(list.deleteTask(nonExistingTask));
+    }
+
+
+    //Testfälle getAllTasks-Methode
+
+    @Test
+    public void testGetAllTasks() {
+        // Arrange
+        TaskListImpl taskList = new TaskListImpl();
+
+        // Act
+        List<Task> allTasks = taskList.getAllTasks();
+
+        // Assert
+        assertNotNull(allTasks);
+        assertEquals(3, allTasks.size());
+        assertEquals("Arbeit", allTasks.get(0).getName());
+        assertEquals("Sport", allTasks.get(1).getName());
+        assertEquals("Studium", allTasks.get(2).getName());
     }
 
 

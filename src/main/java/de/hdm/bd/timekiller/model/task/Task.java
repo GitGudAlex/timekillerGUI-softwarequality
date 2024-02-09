@@ -57,4 +57,7 @@ public class Task {
         durationTracker.reset();
         active = false;
     }
+    public void setDurationTracker(DurationTracker durationTracker) {
+        this.durationTracker = durationTracker;
+    }
 }
