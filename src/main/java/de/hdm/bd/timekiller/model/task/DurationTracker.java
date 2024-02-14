@@ -4,6 +4,15 @@ import java.util.Date;
 
 public class DurationTracker {
     private int taskId;
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
     private Date startTime;
     private Date endTime;
     private long duration;
