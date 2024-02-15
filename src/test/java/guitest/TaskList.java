@@ -51,6 +51,7 @@ public class TaskList {
             assertFalse(task.isActive());
             lv.getSelectionModel().select(task);
             assertTrue(task.isActive());
+            lv.getSelectionModel().clearSelection();
         } else {
             // Falls kein passender Task gefunden wurde, Meldung loggen
             logger.warning("Der Task 'Arbeit' wurde nicht gefunden.");
