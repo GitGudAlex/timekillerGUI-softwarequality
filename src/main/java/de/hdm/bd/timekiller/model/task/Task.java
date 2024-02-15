@@ -1,16 +1,12 @@
 package de.hdm.bd.timekiller.model.task;
 
-import java.util.Date;
 
 public class Task {
     private int id;
     private DurationTracker durationTracker;
     private String name;
     private boolean active;
-    private Date startTime;
-    private Date endTime;
 
-    private String As9da;
 
 
     public Task(int id, String name) {
