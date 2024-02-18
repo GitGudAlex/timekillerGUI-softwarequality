@@ -8,7 +8,7 @@ import de.hdm.bd.timekiller.customExceptions.IllegalNameException;
 import de.hdm.bd.timekiller.model.task.ITaskList;
 import de.hdm.bd.timekiller.model.task.Task;
 import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -83,18 +83,18 @@ public class ITaskListTest {
 
     }
 
-    @Test(expected = DuplicatedNameException.class)
+    @Test
     public void testInsertTaskWithDuplicateNameThrowsDuplicatedNameException() throws DuplicatedNameException, IllegalNameException {
+        // Mock für die taskList konfigurieren
         when(taskList.insertTask("TaskName2")).thenThrow(new DuplicatedNameException("Task with name already exists"));
 
-        try {
-            // Aufgabe mit einem bereits existierenden Namen hinzufügen (sollte eine Ausnahme auslösen)
+        // Überprüfen, ob das Einfügen einer Aufgabe mit einem bereits vorhandenen Namen die erwartete Ausnahme auslöst
+        DuplicatedNameException exception = assertThrows(DuplicatedNameException.class, () -> {
             taskList.insertTask("TaskName2");
-        } catch (DuplicatedNameException e) {
-            // Überprüfen, ob die erwartete Fehlermeldung übereinstimmt
-            assertEquals("Task with name already exists", e.getMessage());
-            throw e; //
-        }
+        });
+
+        // Überprüfen, ob die erwartete Fehlermeldung übereinstimmt
+        assertEquals("Task with name already exists", exception.getMessage());
 
     }
 

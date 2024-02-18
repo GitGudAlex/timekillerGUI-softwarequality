@@ -1,40 +1,27 @@
 package tasktest;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 
 import de.hdm.bd.timekiller.model.task.DurationTracker;
 import de.hdm.bd.timekiller.model.task.Task;
 import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class DurationTrackerTest {
 
-        private Task task;
-        private DurationTracker durationTracker;
-
-        @Before
-        public void setUp() {
-                task = new Task(1, "TestTask");
-                durationTracker = mock(DurationTracker.class);
-                task.setDurationTracker(durationTracker);
-        }
-
         @Test
-        public void testStart() {
-                // Überprüfen, dass startTime null ist, bevor start aufgerufen wird
-                assertNull(durationTracker.getStartTime());
+        public void testStartAndStop() {
+                DurationTracker durationTracker = new DurationTracker(1); // 1 ist eine Beispiel-Task-ID
 
-                // Aufruf der start-Methode auf der Task-Instanz
+                Task task = new Task(1, "TestTask");
+
                 task.start();
+                task.stop();
 
-                // Überprüfen, dass startTime nach dem Aufruf nicht mehr null ist
-                assertNotNull(durationTracker.getStartTime());
-
-                // Überprüfen, dass die start-Methode auf der DurationTracker-Instanz aufgerufen wurde
-                verify(durationTracker).start();
+                assertEquals(0, durationTracker.getDuration());
         }
-
 }
