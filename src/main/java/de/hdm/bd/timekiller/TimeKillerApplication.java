@@ -1,6 +1,7 @@
 package de.hdm.bd.timekiller;
 
 import de.hdm.bd.timekiller.ctrl.GuiController;
+import de.hdm.bd.timekiller.customExceptions.IllegalNameException;
 import de.hdm.bd.timekiller.model.task.TaskListImpl;
 import de.hdm.bd.timekiller.model.task.ITaskList;
 import java.io.IOException;
@@ -15,7 +16,7 @@ public class TimeKillerApplication extends Application {
     @Override
 
 
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage) throws IOException, IllegalNameException {
         FXMLLoader fxmlLoader =
             new FXMLLoader(TimeKillerApplication.class.getResource("gui.fxml"));
         scene = new Scene(fxmlLoader.load(), 640, 480);
