@@ -1,10 +1,9 @@
 package guitest;
 import de.hdm.bd.timekiller.TimeKillerApplication;
-import de.hdm.bd.timekiller.ctrl.GuiController;
-import de.hdm.bd.timekiller.ctrl.PieChartHelper;
 import de.hdm.bd.timekiller.customExceptions.IllegalNameException;
 import de.hdm.bd.timekiller.model.task.Task;
 import javafx.application.Platform;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.ListView;
@@ -16,23 +15,18 @@ import org.testfx.assertions.api.Assertions;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 import org.testfx.util.WaitForAsyncUtils;
-
-
-import javafx.application.Application;
-import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
-import javafx.scene.control.Label;
-import javafx.stage.Stage;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(ApplicationExtension.class)
@@ -41,8 +35,6 @@ public class TaskList {
 
     private static final TimeKillerApplication timeKiller = new TimeKillerApplication();
     private static final Logger logger = Logger.getLogger(TaskList.class.getName());
-
-    private GuiController gui;
 
     @Start
     public void start(Stage stage) throws IOException, IllegalNameException {
@@ -55,7 +47,7 @@ public class TaskList {
     @Test
     void initialStateOfTaskList(FxRobot robot) {
         ListView lv = robot.lookup("#listView").queryAs(ListView.class);
-        Assertions.assertThat(lv).hasExactlyNumItems(3);
+        Assertions.assertThat(lv).hasExactlyNumItems(4);
 
     }
 
@@ -104,9 +96,9 @@ public class TaskList {
         List<PieChart.Data> chartData = pChart.getData();
         assertEquals(2, chartData.size());
         PieChart.Data entry1 = chartData.get(0);
-        assertEquals(3, entry1.getPieValue());
+        assertEquals(3000, entry1.getPieValue(),100);
         PieChart.Data entry2 = chartData.get(1);
-        assertEquals(4, entry2.getPieValue());
+        assertEquals(4000, entry2.getPieValue(),100);
 
         //Prüfen der Tasknamen
         assertEquals("Arbeit", entry1.getName());
@@ -119,25 +111,76 @@ public class TaskList {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-
                 ListView lv = robot.lookup("#listView").queryAs(ListView.class);
                 //Tasks starten und nach bestimmter Zeit beenden
                 startTasks(lv);
-
             }
-
-
-
         });
         //Wechsel zur Evaluationssicht
         Button button = robot.lookup("#evalButton").queryAs(Button.class);
         robot.clickOn(button);
+
         // DatePicker finden
-      //  DatePicker dp = robot.lookup("#startDatePicker").queryAs(DatePicker.class);
-        //Datum 31.12. des aktuellen Jahrs im DatePicker setzen
-       // String date = Calendar.getInstance().get(Calendar.YEAR) + "-12-31";
-       // dp.setValue(LocalDate.parse(date));
+        DatePicker dpStart = robot.lookup("#startDatePicker").queryAs(DatePicker.class);
+        DatePicker dpEnd = robot.lookup("#endDatePicker").queryAs(DatePicker.class);
+        String date = Calendar.getInstance().get(Calendar.YEAR) + "-12-31";
+
+        Platform.runLater(new Runnable() {
+        public void run() {
+            //Datum setzten
+            dpStart.setValue(LocalDate.parse(date));
+            dpEnd.setValue(LocalDate.parse(date));
+        }});
+        //angezeigte Werte überprüfen
+        WaitForAsyncUtils.sleep(1, TimeUnit.SECONDS);
+        assertEquals(LocalDate.parse(date),dpStart.getValue());
+        assertEquals(LocalDate.parse(date),dpEnd.getValue());
     }
+
+    @Test
+    public void addTask(FxRobot robot) {
+        //click auf "+"-Button
+        Button addButton = robot.lookup("#addButton").queryAs(Button.class);
+        robot.clickOn(addButton);
+        //Texteingabe in Dialogfenster
+        robot.interact(() -> {
+            robot.lookup(".text-field").queryTextInputControl().setText("TestInput");
+        });
+        //Bestätigen
+        robot.clickOn("OK");
+        //Prüfen, ob ein neuer Task erstellt wurde
+        ListView lv = robot.lookup("#listView").queryAs(ListView.class);
+        List<Task> tasks = lv.getItems();
+        assertNotNull(getTaskForName(tasks, "TestInput"));
+    }
+
+    @Test
+    public void deleteTask(FxRobot robot) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                ListView lv = robot.lookup("#listView").queryAs(ListView.class);
+                //Tasks starten und nach bestimmter Zeit beenden
+                startTasks(lv);
+                List<Task> tasks = lv.getItems();
+                Task yogaTask = getTaskForName(tasks, "Yoga");
+                lv.getSelectionModel().select(yogaTask);
+            }
+        });
+        //nacheinander prüfen, ob eine noch nicht benutze, ein bereits benutze und eine noch aktive Task erfolgreich gelöscht werden kann
+        for (int i = 0; i <= 2; i++) {
+            System.out.println("Zahl: " + i);
+            Set<Node> deleteButtons = robot.lookup(".deleteButton").queryAll();
+            assertEquals(4-i, deleteButtons.size());
+            Node deleteButton = deleteButtons.toArray(new Node[0])[1];
+            robot.clickOn(deleteButton);
+            //Bestätigen
+            robot.clickOn("OK");
+        }
+
+    }
+
+
 
     private void startTasks(ListView lv){
 

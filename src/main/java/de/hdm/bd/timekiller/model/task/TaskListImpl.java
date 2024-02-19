@@ -12,11 +12,10 @@ public class TaskListImpl implements ITaskList {
     private List<Task> tasks;
     public TaskListImpl() throws IllegalNameException {
         tasks = new ArrayList<>();
-
-        tasks.add(new Task(1, "Studium"));
         tasks.add(new Task(2, "Arbeit"));
         tasks.add(new Task(3, "Sport"));
-
+        tasks.add(new Task(1, "Studium"));
+        tasks.add(new Task(3, "Yoga"));
         Collections.sort(tasks, Comparator.comparing(Task::getName));
 
     }

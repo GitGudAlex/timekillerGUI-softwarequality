@@ -180,6 +180,7 @@ public class GuiController {
                 deleteButton.setMaxSize(30, 30);
                 deleteButton.setMinSize(30, 30);
                 deleteButton.setOnAction(event -> deleteTask(task));
+                deleteButton.getStyleClass().add("deleteButton");
 
                 Region region = new Region();
                 HBox.setHgrow(region, Priority.ALWAYS);
