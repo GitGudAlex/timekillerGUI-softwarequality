@@ -27,6 +27,7 @@ import java.util.logging.Logger;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(ApplicationExtension.class)
@@ -180,6 +181,32 @@ public class TaskList {
 
     }
 
+    @Test
+    public void editTask(FxRobot robot) {
+        for (int i = 0; i <= 0; i++) {
+            Set<Node> editButtons = robot.lookup(".editButton").queryAll();
+            Node editButton = editButtons.toArray(new Node[0])[1];
+            robot.clickOn(editButton);
+            //Texteingabe in Dialogfenster
+            robot.interact(() -> {
+               robot.lookup(".text-field").queryTextInputControl().setText("neuerName");
+            });
+            //Bestätigen
+            robot.clickOn("OK");
+        }
+
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                ListView lv = robot.lookup("#listView").queryAs(ListView.class);
+                List<Task> tasks = lv.getItems();
+                assertNull(getTaskForName(tasks, "Sport"));
+                assertNotNull(getTaskForName(tasks,"neuerName"));
+            }
+        });
+
+
+    }
 
 
     private void startTasks(ListView lv){

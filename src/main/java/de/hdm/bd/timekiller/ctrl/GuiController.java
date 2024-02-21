@@ -174,6 +174,8 @@ public class GuiController {
                 editButton.setMaxSize(30, 30);
                 editButton.setMinSize(30, 30);
                 editButton.setOnAction(event -> editTask(task));
+                editButton.getStyleClass().add("editButton");
+
 
                 Button deleteButton = new Button("", new ImageView("de/hdm/bd/timekiller/img/icons8-delete-24.png"));
                 deleteButton.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
