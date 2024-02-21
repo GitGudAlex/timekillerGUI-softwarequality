@@ -1,10 +1,17 @@
 package de.hdm.bd.timekiller;
 
+import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.jdbc.JdbcConnectionSource;
+import com.j256.ormlite.support.ConnectionSource;
 import de.hdm.bd.timekiller.ctrl.GuiController;
 import de.hdm.bd.timekiller.customExceptions.IllegalNameException;
+import de.hdm.bd.timekiller.model.task.DbManager;
+import de.hdm.bd.timekiller.model.task.Task;
 import de.hdm.bd.timekiller.model.task.TaskListImpl;
 import de.hdm.bd.timekiller.model.task.ITaskList;
 import java.io.IOException;
+import java.util.List;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -15,8 +22,7 @@ public class TimeKillerApplication extends Application {
 
     @Override
 
-
-    public void start(Stage stage) throws IOException, IllegalNameException {
+    public void start(Stage stage) throws Exception {
         FXMLLoader fxmlLoader =
             new FXMLLoader(TimeKillerApplication.class.getResource("gui.fxml"));
         scene = new Scene(fxmlLoader.load(), 640, 480);
@@ -32,6 +38,7 @@ public class TimeKillerApplication extends Application {
 
         ((GuiController) fxmlLoader.getController()).setInput(taskList);
         ((GuiController) fxmlLoader.getController()).switchToDataInput();
+
     }
 
     public static void main(String[] args) {

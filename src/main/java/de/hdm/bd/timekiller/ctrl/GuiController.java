@@ -38,6 +38,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 
 public class GuiController {
@@ -52,7 +53,6 @@ public class GuiController {
 
     @FXML
     private DatePicker endDatePicker;
-
 
     private PieChartHelper helper;
 
@@ -71,7 +71,7 @@ public class GuiController {
     private static final PseudoClass DEFAULT_BACKGROUND_CLASS = PseudoClass.getPseudoClass("default");
     private static final PseudoClass HIGHLIGHTED_BACKGROUND_CLASS = PseudoClass.getPseudoClass("active");
 
-    public void setInput(ITaskList taskList) {
+    public void setInput(ITaskList taskList) throws Exception {
         this.taskList = taskList;
         items = FXCollections.observableArrayList (taskList.getAllTasks());
         listView.setItems(items);
@@ -95,45 +95,8 @@ public class GuiController {
         listView.setCellFactory(new TaskListCellFactory());
         helper = new PieChartHelper(pieChart, taskList);
 
-        //StartDatePicker
-        EventHandler<ActionEvent> startEvent = new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent e)
-            {
-                // get the date picker value
-                LocalDate i = startDatePicker.getValue();
-                helper.setStartDate(DateUtils.startAsDate(i));
-                helper.updatePieChart();
-            }
-        };
 
-        // show week numbers
-        startDatePicker.setShowWeekNumbers(true);
-        // when datePicker is pressed
-        startDatePicker.setOnAction(startEvent);
-
-        String date = Calendar.getInstance().get(Calendar.YEAR) + "-01-01";
-        startDatePicker.setValue(LocalDate.parse(date));
-
-
-        //EndDatePicker
-        EventHandler<ActionEvent> endEvent = new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent e)
-            {
-                // get the date picker value
-                LocalDate i = endDatePicker.getValue();
-                helper.setEndDate(DateUtils.endAsDate(i));
-                helper.updatePieChart();
-            }
-        };
-        // show week numbers
-        endDatePicker.setShowWeekNumbers(true);
-        // when datePicker is pressed
-        endDatePicker.setOnAction(endEvent);
-        LocalDate currentDate = LocalDate.now();
-        endDatePicker.setValue(currentDate);
     };
-
-
 
     public class TaskListCellFactory implements Callback<ListView<Task>, ListCell<Task>> {
 
@@ -265,6 +228,12 @@ public class GuiController {
     public void switchToDataInput() {
         aPane.getChildren().clear();
         aPane.getChildren().add(dataInputListView);
+
+        /*
+        aPane.getChildren().clear();
+        aPane.getChildren().add(dataInputListView);
+
+         */
     }
 
     @FXML
@@ -272,6 +241,45 @@ public class GuiController {
         aPane.getChildren().clear();
         aPane.getChildren().add(evaluationGridPane);
         helper.updatePieChart();
+
+        //taskList.saveOrUpdateDurationTrackers();
+
+        //StartDatePicker
+        EventHandler<ActionEvent> startEvent = new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent e)
+            {
+                // get the date picker value
+                LocalDate i = startDatePicker.getValue();
+                helper.setStartDate(DateUtils.startAsDate(i));
+                helper.updatePieChart();
+            }
+        };
+
+        // show week numbers
+        startDatePicker.setShowWeekNumbers(true);
+        // when datePicker is pressed
+        startDatePicker.setOnAction(startEvent);
+
+        String date = Calendar.getInstance().get(Calendar.YEAR) + "-01-01";
+        startDatePicker.setValue(LocalDate.parse(date));
+
+
+        //EndDatePicker
+        EventHandler<ActionEvent> endEvent = new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent e)
+            {
+                // get the date picker value
+                LocalDate i = endDatePicker.getValue();
+                helper.setEndDate(DateUtils.endAsDate(i));
+                helper.updatePieChart();
+            }
+        };
+        // show week numbers
+        endDatePicker.setShowWeekNumbers(true);
+        // when datePicker is pressed
+        endDatePicker.setOnAction(endEvent);
+        LocalDate currentDate = LocalDate.now();
+        endDatePicker.setValue(currentDate);
     }
 
 }

@@ -3,88 +3,126 @@ package de.hdm.bd.timekiller.model.task;
 import de.hdm.bd.timekiller.customExceptions.DuplicatedNameException;
 import de.hdm.bd.timekiller.customExceptions.IllegalNameException;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 public class TaskListImpl implements ITaskList {
+    private DbManager dbManager;
     private List<Task> tasks;
-    public TaskListImpl() throws IllegalNameException {
-        tasks = new ArrayList<>();
-
-        tasks.add(new Task(1, "Studium"));
-        tasks.add(new Task(2, "Arbeit"));
-        tasks.add(new Task(3, "Sport"));
-
-        Collections.sort(tasks, Comparator.comparing(Task::getName));
-
+    public TaskListImpl()  {
+        try{
+            dbManager = new DbManager();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
+
     @Override
     public List<Task> getAllTasks() {
-        return tasks;
+        try{
+            return dbManager.getTaskDao().queryForAll();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
+
     @Override
     public Task getTask(int id) {
-        for(Task task : tasks){
-            if(task.getId() == id){
-                return task;
-            }
+        try{
+            return dbManager.getTaskDao().queryForId(id);
+        }catch (SQLException e){
+            e.printStackTrace();
+            return null;
         }
-        return null; //Task not found!
     }
 
     @Override
     public int insertTask(String name) throws DuplicatedNameException, IllegalNameException {
-        if(!checkValidName(name)){
+        System.out.println("insertTask");
+        if (!checkValidName(name)) {
             throw new IllegalNameException("Invalid task name.");
         }
-        for (Task task : tasks){
-            if(task.getName().equals(name)){
-                throw new DuplicatedNameException("Whoops thats a duplicate!");
+        try {
+            List<Task> existingTasks = dbManager.getTaskDao().queryForEq("name", name);
+            if (!existingTasks.isEmpty()) {
+                throw new DuplicatedNameException("Task with the same name already exists.");
             }
+            Task task = new Task(name);
+            return dbManager.getTaskDao().create(task);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -1;
         }
-
-        int newId = generateUniqueId();
-        Task newTask = new Task(newId, name);
-        tasks.add(newTask);
-        return newId;
     }
+
     @Override
     public void updateTask(Task task) throws DuplicatedNameException, IllegalNameException {
-        if(!checkValidName(task.getName())){
-            throw new IllegalNameException("Invalid Name.");
+        System.out.println("updateTask");
+        if (!checkValidName(task.getName())) {
+            throw new IllegalNameException("Invalid task name.");
         }
-        for (Task existingTask : tasks){
-            if(existingTask.getId() != task.getId() && existingTask.getName().equals(task.getName())){
-                throw new DuplicatedNameException("Whoopsie gibts schon! :)");
+        try {
+            List<Task> existingTasks = dbManager.getTaskDao().queryForEq("name", task.getName());
+            for (Task existingTask : existingTasks) {
+                if (existingTask.getId() != task.getId()) {
+                    throw new DuplicatedNameException("Task with the same name already exists.");
+                }
             }
-        }
 
-        for (int i = 0; i < tasks.size() ; i++) {
-            if (tasks.get(i).getId() == task.getId()){
-                tasks.set(i, task);
-                return;
-            }
+            dbManager.getTaskDao().update(task);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
+
     @Override
     public boolean deleteTask(Task task) {
-        return tasks.remove(task);
+        System.out.println("deleteTask");
+        try {
+            //Wenn Eintrag gelöscht gibt ORMLite 1 zurück
+            dbManager.deleteDurationTrackersForTask(task);
+            return dbManager.getTaskDao().delete(task) == 1;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
-    //Generate Unique ID
-    private int generateUniqueId(){
-        int maxId = 0;
-        for (Task task : tasks){
-            maxId = Math.max(maxId, task.getId());
-        }
-        return maxId + 1;
-    }
     private boolean checkValidName(String name){
+        System.out.println("checkValidName");
         return name.matches("^[a-zA-Z_][a-zA-Z0-9_]*");
     }
-
+    /*
+    public void saveOrUpdateDurationTrackers() {
+        for (Task task : tasks) {
+            for (DurationTracker tracker : task.getRecords()) {
+                if (tracker.getId() == 0) {
+                    // Wenn die ID des DurationTracker 0 ist, ist er neu und muss gespeichert werden
+                    try {
+                        dbManager.getDurationTrackerDao().create(tracker);
+                        System.out.println("neuer Tracker");
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    // Andernfalls aktualisieren Sie den vorhandenen DurationTracker
+                    try {
+                        dbManager.getDurationTrackerDao().update(tracker);
+                        System.out.println("alter Tracker");
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
 
     }
+    */
+
+
+}
 

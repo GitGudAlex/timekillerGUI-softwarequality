@@ -1,6 +1,8 @@
 package de.hdm.bd.timekiller.model.task;
 
 
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.field.ForeignCollectionField;
 import de.hdm.bd.timekiller.customExceptions.IllegalNameException;
 
 import java.beans.PropertyChangeListener;
@@ -12,15 +14,16 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Task {
+    @DatabaseField(generatedId = true)
     private int id;
+    @DatabaseField
     private String name;
     private boolean active;
-
+    @ForeignCollectionField
     private Collection<DurationTracker> records = new ArrayList<>();
     private DurationTracker activeRecord;
 
     public Task() {
-
     }
 
     public Task(String name) throws IllegalNameException {
@@ -90,7 +93,6 @@ public class Task {
         activeRecord = null;
     }
 
-
     public long getOverallDuration() {
         long result = 0;
         for (DurationTracker record : records) {
@@ -116,7 +118,6 @@ public class Task {
     public String toString() {
         return name;
     }
-
 
     private boolean checkName(String input) {
 
