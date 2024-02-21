@@ -1,5 +1,6 @@
 package tasktest;
 
+import de.hdm.bd.timekiller.customExceptions.IllegalNameException;
 import de.hdm.bd.timekiller.model.task.Task;
 import org.junit.jupiter.api.Test;
 
@@ -9,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TaskTest {
     @Test
-    public void testStartAndStopMethods() {
+    public void testStartAndStopMethods()  throws IllegalNameException {
         //Hier lieber Mockito verwenden mit times1?
         Task task = new Task(1, "TestTask");
 
@@ -26,7 +27,7 @@ public class TaskTest {
     }
 
     @Test
-    public void testGetOverallDuration() {
+    public void testGetOverallDuration() throws IllegalNameException {
         //Eventuell mit Spy Milliseconds returnen?
         Task task = new Task(1, "TestTask");
         task.start();
