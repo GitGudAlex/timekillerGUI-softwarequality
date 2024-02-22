@@ -13,12 +13,18 @@ import java.util.Date;
 import java.util.List;
 
 public class DbManager {
-    public static final String DATABASE_NAME = "timekiller.db";
+    public static final String DEFAULT_DATABASE_NAME = "timekiller.db";
+    private String databaseName;
     private Dao<Task, Integer> taskDao;
     private Dao<DurationTracker, Integer> durationTrackerDao;
     private ConnectionSource connectionSource;
 
-    public DbManager() throws Exception {
+    public DbManager() throws Exception{
+        this(DEFAULT_DATABASE_NAME);
+    }
+
+    public DbManager(String databaseName) throws Exception {
+        this.databaseName = databaseName;
         connectionSource = null;
         try {
             connectionSource = connect();
@@ -30,7 +36,7 @@ public class DbManager {
     }
 
     private ConnectionSource connect() throws SQLException {
-        return new JdbcConnectionSource("jdbc:sqlite:" + DATABASE_NAME);
+        return new JdbcConnectionSource("jdbc:sqlite:" + databaseName);
     }
 
     private void closeConnection(ConnectionSource c) throws Exception {

@@ -27,7 +27,6 @@ public class TimeKillerApplication extends Application {
     @Override
 
     public void start(Stage stage) throws Exception {
-        // Zeigen Sie einen Dialog an, um den Benutzer zu fragen, ob eine neue Datenbank erstellt werden soll oder nicht
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Neue Datenbank erstellen?");
         alert.setHeaderText(null);

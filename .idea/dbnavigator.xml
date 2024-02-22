@@ -50,6 +50,7 @@ select * from durationtracker;]]></console>
     <filter-actions connection-id="da44517a-d8ac-4470-a2b8-01b5fc3b3ae0" dataset="main.sqlite_sequence" active-filter-id="" />
     <filter-actions connection-id="da44517a-d8ac-4470-a2b8-01b5fc3b3ae0" dataset="main.durationtrackers" active-filter-id="EMPTY_FILTER" />
     <filter-actions connection-id="3b536475-d412-4124-97ec-16afd3e27a2e" dataset="main.tasks" active-filter-id="" />
+    <filter-actions connection-id="3b536475-d412-4124-97ec-16afd3e27a2e" dataset="main.durationtracker" active-filter-id="" />
     <filter-actions connection-id="3b536475-d412-4124-97ec-16afd3e27a2e" dataset="main.durationtrackers" active-filter-id="" />
   </component>
   <component name="DBNavigator.Project.ExecutionManager">
@@ -167,7 +168,7 @@ select * from durationtracker;]]></console>
           <description value="" />
           <database-type value="SQLITE" />
           <config-type value="BASIC" />
-          <database-version value="3.41" />
+          <database-version value="3.44" />
           <driver-source value="BUNDLED" />
           <driver-library value="" />
           <driver value="" />
@@ -178,7 +179,7 @@ select * from durationtracker;]]></console>
           <tns-folder value="" />
           <tns-profile value="" />
           <files>
-            <file path="C:\sqlite\db\timekiller_test.db" schema="main" />
+            <file path="C:\Users\kraus\Documents\2. Semester CSM\SoftwareQuality\timekiller_gui\test_timekiller.db" schema="main" />
           </files>
           <type value="NONE" />
           <user value="" />
