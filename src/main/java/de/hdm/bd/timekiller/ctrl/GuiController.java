@@ -84,8 +84,10 @@ public class GuiController {
 
                         if(newValue != null) {
                             if (newValue.isActive()) {
+                                System.out.println("newValue stop");
                                 newValue.stop();
                             } else {
+                                System.out.println("newValue Start: "+ newValue);
                                 newValue.start();
                             }
                         }
@@ -164,9 +166,11 @@ public class GuiController {
 
         result.ifPresent(name -> {
             if (!name.equals("")) {
-                Task task = null;
                 try {
-                    task = taskList.getTask(taskList.insertTask(name));
+                    int taskId = taskList.insertTask(name);
+                    Task task = taskList.getTask(taskId);
+                    System.out.println("task in addTask: " + task);
+
                     // Aktualisieren Sie die ListView
                     refreshTaskListView(task);
                 } catch (IllegalNameException | DuplicatedNameException e) {
@@ -190,8 +194,6 @@ public class GuiController {
         });
     }
 
-
-
     private void editTask(Task task) {
         TextInputDialog dialog = new TextInputDialog(task.toString());
         dialog.setTitle("Edit Task");
@@ -210,7 +212,8 @@ public class GuiController {
         });
     }
 
-    private void refreshTaskListView(Task task) {
+    private void refreshTaskListView(Task task) {;
+        System.out.println("task " + task);
         listView.getItems().add(task);
     }
 
@@ -228,12 +231,6 @@ public class GuiController {
     public void switchToDataInput() {
         aPane.getChildren().clear();
         aPane.getChildren().add(dataInputListView);
-
-        /*
-        aPane.getChildren().clear();
-        aPane.getChildren().add(dataInputListView);
-
-         */
     }
 
     @FXML
@@ -241,8 +238,6 @@ public class GuiController {
         aPane.getChildren().clear();
         aPane.getChildren().add(evaluationGridPane);
         helper.updatePieChart();
-
-        //taskList.saveOrUpdateDurationTrackers();
 
         //StartDatePicker
         EventHandler<ActionEvent> startEvent = new EventHandler<ActionEvent>() {

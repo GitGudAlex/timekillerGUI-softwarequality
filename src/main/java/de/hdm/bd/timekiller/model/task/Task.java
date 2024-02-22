@@ -63,8 +63,6 @@ public class Task {
         return records;
     }
 
-
-
     DurationTracker createRecord() {
         return new DurationTracker();
     }
@@ -74,11 +72,16 @@ public class Task {
     }
 
     public void start() {
-        DurationTracker record = createRecord();
-        record.start();
-        activeRecord = record;
-        active = true;
-        addRecordToTask(activeRecord);
+        if (!isActive()){
+            DurationTracker record = createRecord();
+            record.start();
+            activeRecord = record;
+            active = true;
+            //addRecordToTask(activeRecord);
+            System.out.println("Task start");
+        }else{
+            System.out.println("task is already active");
+        }
     }
 
     private void addRecordToTask(DurationTracker record) {
@@ -86,14 +89,20 @@ public class Task {
     }
 
     public void stop() {
-        activeRecord.stop();
-        active = false;
+        if(isActive()){
+            activeRecord.stop();
+            active = false;
+            addRecordToTask(activeRecord);
+            System.out.println("Task stopped.");
+        }else{
+            System.out.println("Task is not active");
+        }
 
         //support.firePropertyChange("record", this.id, activeRecord);
-        activeRecord = null;
+        //activeRecord = null;
     }
 
-    public long getOverallDuration() {
+    public long getOverallLifetimeDuration() {
         long result = 0;
         for (DurationTracker record : records) {
             result = result + record.getDuration();
@@ -101,7 +110,7 @@ public class Task {
         return result;
     }
 
-    public long getOverallDuration(Date start, Date end) {
+    public long getOverallDurationForTimePeriod(Date start, Date end) {
         long result = 0;
         long startTime = start.getTime();
         long endTime = end.getTime();

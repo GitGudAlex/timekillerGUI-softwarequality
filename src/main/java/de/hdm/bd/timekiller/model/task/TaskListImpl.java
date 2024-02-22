@@ -11,7 +11,6 @@ import java.util.List;
 
 public class TaskListImpl implements ITaskList {
     private DbManager dbManager;
-    private List<Task> tasks;
     public TaskListImpl()  {
         try{
             dbManager = new DbManager();
@@ -33,6 +32,7 @@ public class TaskListImpl implements ITaskList {
     @Override
     public Task getTask(int id) {
         try{
+            System.out.println("getTask id: " + id);
             return dbManager.getTaskDao().queryForId(id);
         }catch (SQLException e){
             e.printStackTrace();
@@ -42,7 +42,7 @@ public class TaskListImpl implements ITaskList {
 
     @Override
     public int insertTask(String name) throws DuplicatedNameException, IllegalNameException {
-        System.out.println("insertTask");
+        System.out.println("insertTask: " + name);
         if (!checkValidName(name)) {
             throw new IllegalNameException("Invalid task name.");
         }
@@ -52,7 +52,10 @@ public class TaskListImpl implements ITaskList {
                 throw new DuplicatedNameException("Task with the same name already exists.");
             }
             Task task = new Task(name);
-            return dbManager.getTaskDao().create(task);
+            dbManager.getTaskDao().create(task);
+            System.out.println("insert Task taskID: "+ task.getId());
+
+            return task.getId();
         } catch (SQLException e) {
             e.printStackTrace();
             return -1;
@@ -96,33 +99,5 @@ public class TaskListImpl implements ITaskList {
         System.out.println("checkValidName");
         return name.matches("^[a-zA-Z_][a-zA-Z0-9_]*");
     }
-    /*
-    public void saveOrUpdateDurationTrackers() {
-        for (Task task : tasks) {
-            for (DurationTracker tracker : task.getRecords()) {
-                if (tracker.getId() == 0) {
-                    // Wenn die ID des DurationTracker 0 ist, ist er neu und muss gespeichert werden
-                    try {
-                        dbManager.getDurationTrackerDao().create(tracker);
-                        System.out.println("neuer Tracker");
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    // Andernfalls aktualisieren Sie den vorhandenen DurationTracker
-                    try {
-                        dbManager.getDurationTrackerDao().update(tracker);
-                        System.out.println("alter Tracker");
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }
-
-    }
-    */
-
-
 }
 

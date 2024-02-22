@@ -2,10 +2,10 @@ package de.hdm.bd.timekiller.model.task;
 
 import com.j256.ormlite.field.DatabaseField;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class DurationTracker {
-
     public static final String START_FIELD_NAME = "start";
     public static final String END_FIELD_NAME = "end";
     public static final String DURATION_FIELD_NAME = "duration";
@@ -54,6 +54,7 @@ public class DurationTracker {
     }
 
     void setStart(long time) {
+        System.out.println("DurationTracker setStart");
         this.start = new Date(time);
     }
 
@@ -70,6 +71,7 @@ public class DurationTracker {
     }
 
     public void start() {
+        System.out.println("DurationTracker start");
         setStart(getCurrentDate().getTime());
     }
 

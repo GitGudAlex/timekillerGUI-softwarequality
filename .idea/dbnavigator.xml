@@ -17,11 +17,13 @@
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="da44517a-d8ac-4470-a2b8-01b5fc3b3ae0">
-      <console name="Connection" type="STANDARD" schema="" session="Main"><![CDATA[select * from tasks;select
+      <console name="Connection" type="STANDARD" schema="" session="Main"><![CDATA[select * from task;select
     t.id,
     t.name
 from
-    tasks t;]]></console>
+    tasks t;
+
+select * from durationtracker;]]></console>
     </connection>
     <connection id="3b536475-d412-4124-97ec-16afd3e27a2e">
       <console name="Connection 1" type="STANDARD" schema="" session="Main" />
@@ -34,9 +36,7 @@ from
     <last-used-providers />
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
-    <open-files>
-      <object connection-id="da44517a-d8ac-4470-a2b8-01b5fc3b3ae0" object-ref="consoles/Connection" />
-    </open-files>
+    <open-files />
   </component>
   <component name="DBNavigator.Project.DatabaseSessionManager">
     <connection id="da44517a-d8ac-4470-a2b8-01b5fc3b3ae0" />
@@ -47,6 +47,7 @@ from
     <filter-actions connection-id="af3ce774-bbeb-49de-9636-9793ac9a0454" dataset="main.accounts" active-filter-id="" />
     <filter-actions connection-id="da44517a-d8ac-4470-a2b8-01b5fc3b3ae0" dataset="main.tasks" active-filter-id="EMPTY_FILTER" />
     <filter-actions connection-id="da44517a-d8ac-4470-a2b8-01b5fc3b3ae0" dataset="main.durationtracker" active-filter-id="" />
+    <filter-actions connection-id="da44517a-d8ac-4470-a2b8-01b5fc3b3ae0" dataset="main.sqlite_sequence" active-filter-id="" />
     <filter-actions connection-id="da44517a-d8ac-4470-a2b8-01b5fc3b3ae0" dataset="main.durationtrackers" active-filter-id="EMPTY_FILTER" />
     <filter-actions connection-id="3b536475-d412-4124-97ec-16afd3e27a2e" dataset="main.tasks" active-filter-id="" />
     <filter-actions connection-id="3b536475-d412-4124-97ec-16afd3e27a2e" dataset="main.durationtrackers" active-filter-id="" />
