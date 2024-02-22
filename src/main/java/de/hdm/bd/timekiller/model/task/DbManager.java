@@ -23,6 +23,7 @@ public class DbManager {
         try {
             connectionSource = connect();
             setupDatabase(connectionSource);
+
         } finally {
             closeConnection(connectionSource);
         }
@@ -75,5 +76,10 @@ public class DbManager {
         DeleteBuilder<DurationTracker, Integer> deleteBuilder = durationTrackerDao.deleteBuilder();
         deleteBuilder.where().eq(DurationTracker.TASK_FIELD_NAME, task);
         deleteBuilder.delete();
+    }
+
+    public void dropTables() throws SQLException{
+        TableUtils.dropTable(connectionSource, Task.class, true);
+        TableUtils.dropTable(connectionSource, DurationTracker.class, true);
     }
 }

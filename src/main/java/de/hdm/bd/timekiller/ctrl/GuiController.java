@@ -208,7 +208,6 @@ public class GuiController {
             } catch (IllegalNameException | DuplicatedNameException e) {
                 System.out.println(e.getMessage());
             }
-
         });
     }
 
