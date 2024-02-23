@@ -1,5 +1,6 @@
 package tasktest;
 import de.hdm.bd.timekiller.ctrl.PieChartHelper;
+import de.hdm.bd.timekiller.customExceptions.IllegalNameException;
 import de.hdm.bd.timekiller.model.task.ITaskList;
 import de.hdm.bd.timekiller.model.task.Task;
 import javafx.collections.FXCollections;
@@ -30,9 +31,14 @@ public class PieChartHelperTest extends ApplicationTest {
     }
 
     @Test
-    public void testGetEntries() {
+    public void testGetEntries() throws IllegalNameException {
         // Mock-Verhalten für getAllTasks() festlegen
-        Task activeTask = new Task(1, "ActiveTask");
+        Task activeTask = null;
+        try {
+            activeTask = new Task(1, "ActiveTask");
+        } catch (IllegalNameException e) {
+            throw new RuntimeException(e);
+        }
         activeTask.start();
         when(mockTaskList.getAllTasks()).thenReturn(FXCollections.observableArrayList(activeTask));
 

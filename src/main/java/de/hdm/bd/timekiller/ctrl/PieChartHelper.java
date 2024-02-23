@@ -6,7 +6,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.PieChart;
 
+import java.util.Date;
+import java.util.List;
+
 public class PieChartHelper {
+    private Date startDate;
+    private Date endDate;
     private PieChart pieChart;
 
     ITaskList tasks;
@@ -35,21 +40,42 @@ public class PieChartHelper {
         pieChart.setData(getEntries());
     }
 
+
+    // TODO: hier sollten die echten Namen und Dauern aus den Tasks als Daten verwendet werden
+    // pieChartData.add(new PieChart.Data(<Taskname>, <darzustellende Dauer>))
+    // in der Membervariable tasks steht bereits die Refernez auf die benutzte ITaskList
     public ObservableList<PieChart.Data> getEntries() {
+        List<Task> taskList = tasks.getAllTasks();
         ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
-        for (Task task : tasks.getAllTasks()) {
-            if (task.isActive()){
-                task.stop();
-                System.out.println("active Task: "+ task);
-                pieChartData.add(new PieChart.Data(task.getName(), task.getOverallDuration()));
-                System.out.println("Overallduration from task: "+ task.getName()+ " ist: "+ task.getOverallDuration());
-            }else if (task.getOverallDuration() != 0){
-                System.out.println("zuvor aktiver Task: "+ task);
-                pieChartData.add(new PieChart.Data(task.getName(), task.getOverallDuration()));
-                System.out.println("Overallduration from task: "+ task.getName()+ " ist: "+ task.getOverallDuration());
+        for(Task task: taskList) {
+            float duration = 0;
+            if(startDate != null && endDate != null) {
+                duration = task.getOverallDuration(getStartDate(), getEndDate());
+            } else {
+                duration = task.getOverallDuration();
+            }
+            if(duration > 0) {
+                pieChartData.add(new PieChart.Data(task.getName(), duration));
             }
         }
         return pieChartData;
     }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
 }
 

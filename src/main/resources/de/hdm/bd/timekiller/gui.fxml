@@ -14,6 +14,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.DatePicker?>
 <BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.hdm.bd.timekiller.ctrl.GuiController">
     <center >
 <AnchorPane fx:id="aPane">
@@ -43,9 +44,15 @@
                                   <RowConstraints maxHeight="155.79999389648438" minHeight="10.0" prefHeight="50.999967956542974" vgrow="SOMETIMES" />
                                   <RowConstraints maxHeight="271.800032043457" minHeight="10.0" prefHeight="271.800032043457" vgrow="SOMETIMES" />
                                 </rowConstraints>
-                                 <children>
-                                    <PieChart fx:id="pieChart" prefHeight="150.0" prefWidth="604.0" GridPane.columnSpan="2" GridPane.rowIndex="1" style="-fx-background-color: #ADD7F6;"/>
-                                 </children>
+                                  <children>
+                                      <DatePicker fx:id="startDatePicker">
+                                          <GridPane.margin>
+                                              <Insets left="10.0" />
+                                          </GridPane.margin>
+                                      </DatePicker>
+                                      <DatePicker fx:id="endDatePicker" GridPane.columnIndex="1"/>
+                                      <PieChart fx:id="pieChart" prefHeight="150.0" prefWidth="604.0" GridPane.columnSpan="2" GridPane.rowIndex="1" style="-fx-background-color: #ADD7F6;"/>
+                                  </children>
                               </GridPane>
                            </children>
                         </AnchorPane>

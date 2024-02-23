@@ -3,46 +3,62 @@ package de.hdm.bd.timekiller.model.task;
 import java.util.Date;
 
 public class DurationTracker {
-    private int taskId;
 
-    public Date getStartTime() {
-        return startTime;
+    private int id;
+    private Date start;
+
+    private Date end;
+
+    private long duration = 0;
+
+
+    public DurationTracker() {
+// all persisted classes must define a no-arg constructor with at least package visibility
     }
 
-    public Date getEndTime() {
-        return endTime;
+
+    public long getId() {
+        return id;
     }
 
-    private Date startTime;
-    private Date endTime;
-    private long duration;
-
-    public DurationTracker(int taskId){
-        this.taskId = taskId;
-        this.duration = 0;
-    }
-
-    public int getTaskId(){
-        return taskId;
-    }
-    public void start(){
-        if(startTime == null){
-            startTime = new Date();
-        }
-    }
-    public void stop(){
-        if(startTime != null){
-            endTime = new Date();
-            duration += (endTime.getTime() - startTime.getTime())/1000;
-            startTime = null;
-        }
-    }
-    public long getDuration(){
-
+    public long getDuration() {
         return duration;
     }
 
-    public void reset(){
-        duration = 0;
+    public long getStartTime() {
+        if (start != null) {
+            return start.getTime();
+        }
+        return 0;
+    }
+
+    public long getEndTime() {
+        if (end != null) {
+            return end.getTime();
+        }
+        return 0;
+    }
+
+    void setStart(long time) {
+        this.start = new Date(time);
+    }
+
+    void setEnd(long time) {
+        this.end = new Date(time);
+        if(start!= null) {
+            duration = end.getTime() - start.getTime();
+        }
+    }
+
+    Date getCurrentDate() {
+        return new Date();
+    }
+
+    public void start() {
+        setStart(getCurrentDate().getTime());
+    }
+
+    public void stop() {
+        setEnd(getCurrentDate().getTime());
     }
 }

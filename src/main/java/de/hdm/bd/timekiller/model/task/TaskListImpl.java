@@ -10,13 +10,12 @@ import java.util.List;
 
 public class TaskListImpl implements ITaskList {
     private List<Task> tasks;
-    public TaskListImpl(){
+    public TaskListImpl() throws IllegalNameException {
         tasks = new ArrayList<>();
-
-        tasks.add(new Task(1, "Studium"));
         tasks.add(new Task(2, "Arbeit"));
         tasks.add(new Task(3, "Sport"));
-
+        tasks.add(new Task(1, "Studium"));
+        tasks.add(new Task(3, "Yoga"));
         Collections.sort(tasks, Comparator.comparing(Task::getName));
 
     }
@@ -85,10 +84,6 @@ public class TaskListImpl implements ITaskList {
         return name.matches("^[a-zA-Z_][a-zA-Z0-9_]*");
     }
 
-    public void clearTaskList(){
-        for (Task task : tasks) {
-        task.clearDuration();
-        }
-        }
+
     }
 

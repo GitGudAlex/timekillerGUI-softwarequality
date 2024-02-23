@@ -1,17 +1,24 @@
 package de.hdm.bd.timekiller.ctrl;
 
+
 import de.hdm.bd.timekiller.customExceptions.DuplicatedNameException;
 import de.hdm.bd.timekiller.customExceptions.IllegalNameException;
 import de.hdm.bd.timekiller.model.task.ITaskList;
+
 import de.hdm.bd.timekiller.model.task.Task;
-import java.util.Comparator;
+
+import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.Optional;
-import de.hdm.bd.timekiller.model.task.TaskListImpl;
+
+import de.hdm.bd.timekiller.model.utils.DateUtils;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.css.PseudoClass;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.chart.PieChart;
@@ -19,6 +26,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -31,7 +39,6 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.text.Font;
 import javafx.util.Callback;
-import javafx.fxml.FXMLLoader;
 
 public class GuiController {
     @FXML
@@ -40,12 +47,19 @@ public class GuiController {
     @FXML
     private PieChart pieChart;
 
+    @FXML
+    private DatePicker startDatePicker;
+
+    @FXML
+    private DatePicker endDatePicker;
+
+
     private PieChartHelper helper;
 
     @FXML
     private AnchorPane aPane;
 
-    private static ITaskList taskList = new TaskListImpl();
+    private static ITaskList taskList;
 
     private ObservableList<Task> items;
 
@@ -67,17 +81,12 @@ public class GuiController {
                     @Override
                     public void changed(ObservableValue<? extends Task> observable, Task oldValue,
                                         Task newValue) {
-                        // TODO: Reaktion auf den Klick auf eine Task muss implementiert werden:
-                        // Wenn die Task gerade aktiv ist, wird sie beendet
-                        // Ansonsten wird sie aktiviert
-                        // Die Task steht in der Refernez newValue
-                        if (newValue != null) {
+
+                        if(newValue != null) {
                             if (newValue.isActive()) {
                                 newValue.stop();
-                                System.out.println(newValue.getOverallDuration());
                             } else {
                                 newValue.start();
-                                System.out.println("task aktiviert: "+ newValue);
                             }
                         }
                     }
@@ -85,6 +94,43 @@ public class GuiController {
 
         listView.setCellFactory(new TaskListCellFactory());
         helper = new PieChartHelper(pieChart, taskList);
+
+        //StartDatePicker
+        EventHandler<ActionEvent> startEvent = new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent e)
+            {
+                // get the date picker value
+                LocalDate i = startDatePicker.getValue();
+                helper.setStartDate(DateUtils.startAsDate(i));
+                helper.updatePieChart();
+            }
+        };
+
+        // show week numbers
+        startDatePicker.setShowWeekNumbers(true);
+        // when datePicker is pressed
+        startDatePicker.setOnAction(startEvent);
+
+        String date = Calendar.getInstance().get(Calendar.YEAR) + "-01-01";
+        startDatePicker.setValue(LocalDate.parse(date));
+
+
+        //EndDatePicker
+        EventHandler<ActionEvent> endEvent = new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent e)
+            {
+                // get the date picker value
+                LocalDate i = endDatePicker.getValue();
+                helper.setEndDate(DateUtils.endAsDate(i));
+                helper.updatePieChart();
+            }
+        };
+        // show week numbers
+        endDatePicker.setShowWeekNumbers(true);
+        // when datePicker is pressed
+        endDatePicker.setOnAction(endEvent);
+        LocalDate currentDate = LocalDate.now();
+        endDatePicker.setValue(currentDate);
     };
 
 
@@ -102,20 +148,14 @@ public class GuiController {
     }
 
     public final class TaskListCell extends ListCell<Task> {
-        boolean active = true;
         @Override
         public void updateItem(Task task, boolean empty) {
             super.updateItem(task, empty);
             if (empty || task == null) {
                 setText(null);
                 setGraphic(null);
-                pseudoClassStateChanged(HIGHLIGHTED_BACKGROUND_CLASS, false);
-                pseudoClassStateChanged(DEFAULT_BACKGROUND_CLASS, false);
+
             } else {
-                //TODO: hier sollte die Hintergrundfarbe passend zum aktuellen Task-Zustand gesetzt
-                // werden: Wenn die DEFAULT_BACKGROUND_CLASS true ist, werden Standard-Farben benutzt
-                // Wenn die HIGHLIGHTED_BACKGROUND_CLASS true ist, wird die in CSS definierte
-                // Highlighting-Farbe benutzt.
                 if(!task.isActive()) {
                     pseudoClassStateChanged(HIGHLIGHTED_BACKGROUND_CLASS, false);
                     pseudoClassStateChanged(DEFAULT_BACKGROUND_CLASS, true);
@@ -134,12 +174,15 @@ public class GuiController {
                 editButton.setMaxSize(30, 30);
                 editButton.setMinSize(30, 30);
                 editButton.setOnAction(event -> editTask(task));
+                editButton.getStyleClass().add("editButton");
+
 
                 Button deleteButton = new Button("", new ImageView("de/hdm/bd/timekiller/img/icons8-delete-24.png"));
                 deleteButton.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
                 deleteButton.setMaxSize(30, 30);
                 deleteButton.setMinSize(30, 30);
                 deleteButton.setOnAction(event -> deleteTask(task));
+                deleteButton.getStyleClass().add("deleteButton");
 
                 Region region = new Region();
                 HBox.setHgrow(region, Priority.ALWAYS);
@@ -163,13 +206,11 @@ public class GuiController {
             if (!name.equals("")) {
                 Task task = null;
                 try {
-                    int taskId = taskList.insertTask(name);
-                    Task newTask = taskList.getTask(taskId);
-                    refreshTaskListView(newTask);
-                } catch (DuplicatedNameException e) {
-                    showAlert("Duplicated Name", "A task with this name already exists.");
-                } catch (IllegalNameException e) {
-                    showAlert("Invalid Name", "Please enter a valid task name.");
+                    task = taskList.getTask(taskList.insertTask(name));
+                    // Aktualisieren Sie die ListView
+                    refreshTaskListView(task);
+                } catch (IllegalNameException | DuplicatedNameException e) {
+                    System.out.println(e.getMessage());
                 }
             }
         });
@@ -183,16 +224,13 @@ public class GuiController {
 
         alert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
-                boolean deleted = taskList.deleteTask(task);
-                if (deleted) {
-                    refreshDeletedTask(task);
-                    System.out.println("Delete worked" + taskList.getAllTasks());
-                } else {
-                    showAlert("Delete Failed", "Failed to delet task.");
-                }
+                taskList.deleteTask(task);
+                refreshDeletedTask(task);
             }
         });
     }
+
+
 
     private void editTask(Task task) {
         TextInputDialog dialog = new TextInputDialog(task.toString());
@@ -201,27 +239,19 @@ public class GuiController {
         dialog.setContentText("Task name:");
 
         dialog.showAndWait().ifPresent(name -> {
-            if(!name.equals(task.getName())){
-                try{
-                    task.setName(name);
-                    taskList.updateTask(task);
-                    refreshUpdatedTask(task);
-                }catch (DuplicatedNameException e){
-                    showAlert("Duplicated Name", "Whoops gibts schon");
-                }catch (IllegalNameException e){
-                    showAlert("Invalid Name", "Enter a valid name!");
-                }
+            try {
+                task.setName(name);
+                taskList.updateTask(task);
+                refreshUpdatedTask(task);
+            } catch (IllegalNameException | DuplicatedNameException e) {
+                System.out.println(e.getMessage());
             }
+
         });
     }
 
     private void refreshTaskListView(Task task) {
         listView.getItems().add(task);
-        listView.getItems().sort(Comparator.comparing(Task::getName));
-        //items.sort(Comparator.comparing(Task::getName));
-        System.out.println("refreshTaskListView");
-        System.out.println(listView.getItems());
-        // TODO: optional: hier kann die dargestellte Liste (listView) zusätzlich sortiert werden
     }
 
     private void refreshDeletedTask(Task task) {
@@ -231,7 +261,6 @@ public class GuiController {
     private void refreshUpdatedTask(Task task) {
         listView.getItems().remove(task);
         listView.getItems().add(task);
-        // TODO: optional: hier kann die dargestellte Liste (listView) zusätzlich sortiert werden
     }
 
 
@@ -239,8 +268,6 @@ public class GuiController {
     public void switchToDataInput() {
         aPane.getChildren().clear();
         aPane.getChildren().add(dataInputListView);
-        setInput(taskList);
-        setInput(taskList);
     }
 
     @FXML
@@ -248,16 +275,6 @@ public class GuiController {
         aPane.getChildren().clear();
         aPane.getChildren().add(evaluationGridPane);
         helper.updatePieChart();
-        taskList.clearTaskList();
-
-    }
-
-    private void showAlert(String title, String content){
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(content);
-        alert.showAndWait();
     }
 
 }
