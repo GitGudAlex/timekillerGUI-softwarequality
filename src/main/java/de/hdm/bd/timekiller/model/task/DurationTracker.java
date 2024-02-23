@@ -39,18 +39,18 @@ public class DurationTracker {
         return 0;
     }
 
-    void setStart(long time) {
+    public void setStart(long time) {
         this.start = new Date(time);
     }
 
-    void setEnd(long time) {
+    public void setEnd(long time) {
         this.end = new Date(time);
         if(start!= null) {
             duration = end.getTime() - start.getTime();
         }
     }
 
-    Date getCurrentDate() {
+    public Date getCurrentDate() {
         return new Date();
     }
 

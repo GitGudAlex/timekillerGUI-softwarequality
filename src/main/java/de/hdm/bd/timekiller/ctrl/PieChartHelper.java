@@ -41,10 +41,7 @@ public class PieChartHelper {
     }
 
 
-    // TODO: hier sollten die echten Namen und Dauern aus den Tasks als Daten verwendet werden
-    // pieChartData.add(new PieChart.Data(<Taskname>, <darzustellende Dauer>))
-    // in der Membervariable tasks steht bereits die Refernez auf die benutzte ITaskList
-    private ObservableList<PieChart.Data> getEntries() {
+    public ObservableList<PieChart.Data> getEntries() {
         List<Task> taskList = tasks.getAllTasks();
         ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
         for(Task task: taskList) {
