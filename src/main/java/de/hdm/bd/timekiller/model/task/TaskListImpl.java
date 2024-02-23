@@ -36,11 +36,11 @@ public class TaskListImpl implements ITaskList {
     @Override
     public int insertTask(String name) throws DuplicatedNameException, IllegalNameException {
         if(!checkValidName(name)){
-            throw new IllegalNameException("Invalid task name.");
+            throw new IllegalNameException(name);
         }
         for (Task task : tasks){
             if(task.getName().equals(name)){
-                throw new DuplicatedNameException("Whoops thats a duplicate!");
+                throw new DuplicatedNameException();
             }
         }
 
@@ -52,11 +52,11 @@ public class TaskListImpl implements ITaskList {
     @Override
     public void updateTask(Task task) throws DuplicatedNameException, IllegalNameException {
         if(!checkValidName(task.getName())){
-            throw new IllegalNameException("Invalid Name.");
+            throw new IllegalNameException();
         }
         for (Task existingTask : tasks){
             if(existingTask.getId() != task.getId() && existingTask.getName().equals(task.getName())){
-                throw new DuplicatedNameException("Whoopsie gibts schon! :)");
+                throw new DuplicatedNameException();
             }
         }
 

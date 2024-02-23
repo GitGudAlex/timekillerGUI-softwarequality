@@ -5,6 +5,7 @@ import de.hdm.bd.timekiller.customExceptions.IllegalNameException;
 import de.hdm.bd.timekiller.model.task.Task;
 import de.hdm.bd.timekiller.model.task.TaskListImpl;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import java.util.List;
 
@@ -15,13 +16,12 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.when;
 
 public class TaskListImplTest {
 
     //Testfälle Insert-Methode:
     //1. Sinnvoller Task: "Turnen" -> Neuer Task in der Taskliste "tasks" hinzugefügt
-    //2. Schon vorhandener Task: Studium -> throw DuplicatedNameException
-    //3. Ungültiger Task: "3" -> throw IllegalName Exception
     @Test
     public void insertTaskTest()
             throws DuplicatedNameException, IllegalNameException {
@@ -30,30 +30,25 @@ public class TaskListImplTest {
         assertEquals("Turnen", list.getTask(taskId).toString());
     }
 
+    //2. Schon vorhandener Task: Studium -> throw DuplicatedNameException
     @Test
-    public void insertInvalidTaskTest(){
-        TaskListImpl list = new TaskListImpl();
-
-        Exception exception = assertThrows(IllegalNameException.class, () -> {
-            list.insertTask("3");
-        });
-        String expectedMessage = "Invalid task name.";
-        String actualMessage = exception.getMessage();
-
-        assertTrue(actualMessage.contains(expectedMessage));
-    }
-
-    @Test
-    public void insertDuplicatedTaskTest(){
+    public void insertDuplicatedTaskTest() throws IllegalNameException {
         TaskListImpl list = new TaskListImpl();
 
         Exception exception = assertThrows(DuplicatedNameException.class, () -> {
             list.insertTask("Studium");
         });
-        String expectedMessage = "Whoops thats a duplicate!";
-        String actualMessage = exception.getMessage();
 
-        assertTrue(actualMessage.contains(expectedMessage));
+    }
+
+    //3. Ungültiger Task: "3" -> throw IllegalName Exception
+    @Test
+    public void insertInvalidTaskTest() throws IllegalNameException {
+        TaskListImpl list = new TaskListImpl();
+
+        Exception exception = assertThrows(IllegalNameException.class, () -> {
+            list.insertTask("3");
+        });
     }
 
     //Testfälle Update-Methode:
@@ -68,21 +63,23 @@ public class TaskListImplTest {
 
         assertEquals("Joggen", list.getTask(taskId).toString());
     }
-
     @Test
     public void updateTaskInvalidNameTest() throws DuplicatedNameException, IllegalNameException {
-        TaskListImpl list = new TaskListImpl();
-        int taskId = list.insertTask("Turnen");
-        Task updatedTask = new Task(taskId, "3");
+        // Instanz von TaskListImpl erstellen
+        TaskListImpl taskList = new TaskListImpl();
 
-        Exception exception = assertThrows(IllegalNameException.class, () -> {
-            list.updateTask(updatedTask);
+        // Mock für die Task-Klasse erstellen
+        Task mockTask = Mockito.mock(Task.class);
+
+        // Task mit ungültigem Name mocken
+        when(mockTask.getId()).thenReturn(1);
+        when(mockTask.getName()).thenReturn("4");
+        // Die updateTask-Methode aufrufen und Exception abfangen
+         assertThrows(IllegalNameException.class, () -> {
+            taskList.updateTask(mockTask);
         });
 
-        String expectedMessage = "Invalid Name.";
-        String actualMessage = exception.getMessage();
 
-        assertTrue(actualMessage.contains(expectedMessage));
     }
 
     @Test
@@ -93,14 +90,10 @@ public class TaskListImplTest {
 
         Task updatedTask = new Task(taskId1, "Schwimmen");
 
-        Exception exception = assertThrows(DuplicatedNameException.class, () -> {
+     assertThrows(DuplicatedNameException.class, () -> {
             list.updateTask(updatedTask);
         });
 
-        String expectedMessage = "Whoopsie gibts schon! :)";
-        String actualMessage = exception.getMessage();
-
-        assertTrue(actualMessage.contains(expectedMessage));
     }
 
 
@@ -133,19 +126,17 @@ public class TaskListImplTest {
     //Testfälle getAllTasks-Methode
 
     @Test
-    public void testGetAllTasks() {
-        // Arrange
+    public void testGetAllTasks() throws IllegalNameException {
         TaskListImpl taskList = new TaskListImpl();
 
-        // Act
         List<Task> allTasks = taskList.getAllTasks();
 
-        // Assert
         assertNotNull(allTasks);
-        assertEquals(3, allTasks.size());
+        assertEquals(4, allTasks.size());
         assertEquals("Arbeit", allTasks.get(0).getName());
         assertEquals("Sport", allTasks.get(1).getName());
         assertEquals("Studium", allTasks.get(2).getName());
+        assertEquals("Yoga", allTasks.get(3).getName());
     }
 
 

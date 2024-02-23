@@ -47,7 +47,7 @@ public class Task {
 
     public void setName(String n) throws IllegalNameException {
         if(!checkName(n)) {
-            throw new IllegalNameException(name);
+            throw new IllegalNameException(n);
         }
         this.name = n;
     }
@@ -78,7 +78,7 @@ public class Task {
         addRecordToTask(activeRecord);
     }
 
-    private void addRecordToTask(DurationTracker record) {
+    public void addRecordToTask(DurationTracker record) {
         getRecords().add(record);
     }
 

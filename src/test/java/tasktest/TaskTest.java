@@ -1,50 +1,82 @@
 package tasktest;
-
+import de.hdm.bd.timekiller.customExceptions.IllegalNameException;
 import de.hdm.bd.timekiller.model.task.DurationTracker;
 import de.hdm.bd.timekiller.model.task.Task;
 import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class TaskTest {
+
     @Test
-    public void testStartAndStopMethods() {
-        // Mock für DurationTracker erstellen
-        DurationTracker mockDurationTracker = mock(DurationTracker.class);
+    public void testCreateTaskWithName() throws IllegalNameException {
+        String taskName = "TestTask";
+        Task task = new Task(taskName);
 
-        // Task erstellen und Mock übergeben
-        Task task = new Task(1, "TestTask");
-        task.setDurationTracker(mockDurationTracker);
+        assertEquals(taskName, task.getName());
+    }
 
-        // Task sollte zu Beginn inaktiv sein
-        assertFalse("Task sollte zu Beginn inaktiv sein.", task.isActive());
+    @Test
+    public void testCreateTaskWithIdAndName() throws IllegalNameException {
+        int taskId = 1;
+        String taskName = "TestTask2";
+        Task task = new Task(taskId, taskName);
 
-        // Task starten und überprüfen
+        assertEquals(taskId, task.getId());
+        assertEquals(taskName, task.getName());
+    }
+
+    @Test
+    public void testSetName() throws IllegalNameException {
+        Task task = new Task("OldName");
+
+        String newName = "NewName";
+        task.setName(newName);
+
+        assertEquals(newName, task.getName());
+    }
+
+    @Test
+    public void testStartAndStop() throws IllegalNameException {
+        Task task = new Task("TestTask3");
+
         task.start();
-        assertTrue("Task sollte aktiv sein, nachdem er gestartet wurde.", task.isActive());
+        assertTrue(task.isActive());
 
-
-        // Task stoppen und überprüfen
         task.stop();
-        assertFalse("Task sollte inaktiv sein, nachdem er gestoppt wurde.", task.isActive());
-
+        assertFalse(task.isActive());
     }
+
     @Test
-    public void testGetOverallDuration() {
-        // Mock für DurationTracker erstellen
+    public void testGetOverallDuration() throws IllegalNameException {
+        Task task = new Task("TestTask4");
+
         DurationTracker mockDurationTracker = mock(DurationTracker.class);
-        when(mockDurationTracker.getDuration()).thenReturn(1000L); // Beispielwert
+        when(mockDurationTracker.getDuration()).thenReturn(1000L);
 
-        // Task erstellen und Mock übergeben
-        Task task = new Task(1, "TestTask");
-        task.setDurationTracker(mockDurationTracker);
+        task.addRecordToTask(mockDurationTracker);
 
-        // Überprüfen, ob die getOverallDuration den Wert des DurationTrackers zurückgibt
         assertEquals(1000L, task.getOverallDuration());
-
     }
 
+    @Test
+    public void testGetOverallDurationWithTimeRange() throws IllegalNameException {
+        Task task = new Task("TestTask5");
+
+        DurationTracker mockDurationTracker = mock(DurationTracker.class);
+        when(mockDurationTracker.getStartTime()).thenReturn(new Date().getTime() - 2000L);
+        when(mockDurationTracker.getEndTime()).thenReturn(new Date().getTime());
+        when(mockDurationTracker.getDuration()).thenReturn(2000L);
+
+        task.addRecordToTask(mockDurationTracker);
+
+        Date startTime = new Date(new Date().getTime() - 3000L);
+        Date endTime = new Date();
+
+        assertEquals(2000L, task.getOverallDuration(startTime, endTime));
+    }
 }
