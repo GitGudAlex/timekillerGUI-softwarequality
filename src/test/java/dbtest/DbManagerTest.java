@@ -1,7 +1,9 @@
 package dbtest;
 
 import de.hdm.bd.timekiller.model.task.DbManager;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -31,8 +33,11 @@ public class DbManagerTest {
     }
     @AfterEach
     public void closeDatabase() throws Exception{
+        System.out.println("closeDatabase outside if Statement");
+        dbManager.dropTables();
         if (conn != null){
             conn.close();
+            System.out.println("Conn closed");
         }
     }
 

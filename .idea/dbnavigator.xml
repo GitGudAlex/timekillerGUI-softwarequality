@@ -17,7 +17,7 @@
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="da44517a-d8ac-4470-a2b8-01b5fc3b3ae0">
-      <console name="Connection" type="STANDARD" schema="" session="Main"><![CDATA[select * from task;select
+      <console name="TimekillerDB" type="STANDARD" schema="" session="Main"><![CDATA[select * from task;select
     t.id,
     t.name
 from
@@ -26,7 +26,12 @@ from
 select * from durationtracker;]]></console>
     </connection>
     <connection id="3b536475-d412-4124-97ec-16afd3e27a2e">
-      <console name="Connection 1" type="STANDARD" schema="" session="Main" />
+      <console name="TestDB" type="STANDARD" schema="" session="Main"><![CDATA[select
+    *
+from
+    durationtracker d;
+
+select * from task;]]></console>
     </connection>
     <connection id="af3ce774-bbeb-49de-9636-9793ac9a0454">
       <console name="Connection 2" type="STANDARD" schema="" session="Main" />
@@ -36,7 +41,9 @@ select * from durationtracker;]]></console>
     <last-used-providers />
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
-    <open-files />
+    <open-files>
+      <object connection-id="da44517a-d8ac-4470-a2b8-01b5fc3b3ae0" object-ref="consoles/TimekillerDB" />
+    </open-files>
   </component>
   <component name="DBNavigator.Project.DatabaseSessionManager">
     <connection id="da44517a-d8ac-4470-a2b8-01b5fc3b3ae0" />
@@ -51,6 +58,7 @@ select * from durationtracker;]]></console>
     <filter-actions connection-id="da44517a-d8ac-4470-a2b8-01b5fc3b3ae0" dataset="main.durationtrackers" active-filter-id="EMPTY_FILTER" />
     <filter-actions connection-id="3b536475-d412-4124-97ec-16afd3e27a2e" dataset="main.tasks" active-filter-id="" />
     <filter-actions connection-id="3b536475-d412-4124-97ec-16afd3e27a2e" dataset="main.durationtracker" active-filter-id="" />
+    <filter-actions connection-id="3b536475-d412-4124-97ec-16afd3e27a2e" dataset="main.sqlite_sequence" active-filter-id="" />
     <filter-actions connection-id="3b536475-d412-4124-97ec-16afd3e27a2e" dataset="main.durationtrackers" active-filter-id="" />
   </component>
   <component name="DBNavigator.Project.ExecutionManager">

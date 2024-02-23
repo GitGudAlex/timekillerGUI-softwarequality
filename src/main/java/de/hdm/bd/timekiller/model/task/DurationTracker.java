@@ -26,7 +26,6 @@ public class DurationTracker {
     @DatabaseField(foreign = true, columnName = TASK_FIELD_NAME)
     private Task task;
 
-
     public DurationTracker() {
 // all persisted classes must define a no-arg constructor with at least package visibility
     }
@@ -53,12 +52,12 @@ public class DurationTracker {
         return 0;
     }
 
-    void setStart(long time) {
+    public void setStart(long time) {
         System.out.println("DurationTracker setStart");
         this.start = new Date(time);
     }
 
-    void setEnd(long time) {
+    public void setEnd(long time) {
         this.end = new Date(time);
         if(start!= null) {
             duration = end.getTime() - start.getTime();
@@ -66,7 +65,7 @@ public class DurationTracker {
         }
     }
 
-    Date getCurrentDate() {
+    public Date getCurrentDate() {
         return new Date();
     }
 
