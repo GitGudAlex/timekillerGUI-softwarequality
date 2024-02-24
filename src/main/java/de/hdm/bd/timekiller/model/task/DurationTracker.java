@@ -34,6 +34,10 @@ public class DurationTracker {
         return id;
     }
 
+    public int getTaskId(){
+        return task.getId();
+    }
+
     public long getDuration() {
         return duration;
     }

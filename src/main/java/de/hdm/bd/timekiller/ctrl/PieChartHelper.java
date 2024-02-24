@@ -41,21 +41,23 @@ public class PieChartHelper {
     }
 
     public void updatePieChart() {
+        System.out.println("startDate: " + startDate);
+        System.out.println("EndDate: " + endDate);
         //pieChart.getData().clear();
-
         if (startDate != null && endDate != null) {
             pieChart.getData().clear();
             pieChart.setData(getEntries());
         } else {
-            // Handle the case where startDate or endDate is null
             System.out.println("Error: startDate or endDate is null.");
         }
     }
 
-    private ObservableList<PieChart.Data> getEntries() {
+    public ObservableList<PieChart.Data> getEntries() {
         System.out.println("getEntries Database");
         List<Task> taskList = tasks.getAllTasks();
+        System.out.println("taskList getEntries: "+ taskList);
         ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
+        System.out.println("ObservableList PiechartData: " + pieChartData);
         for(Task task: taskList) {
             float duration = 0;
             if(startDate != null && endDate != null) {

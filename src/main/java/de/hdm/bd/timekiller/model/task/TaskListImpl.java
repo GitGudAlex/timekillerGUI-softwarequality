@@ -11,9 +11,14 @@ import java.util.List;
 
 public class TaskListImpl implements ITaskList {
     private DbManager dbManager;
-    public TaskListImpl()  {
+
+    public TaskListImpl() {
+        this("timekiller.db");
+    }
+    public TaskListImpl(String databaseName)  {
         try{
-            dbManager = new DbManager();
+            //Datenbanknamen angeben
+            dbManager = new DbManager(databaseName);
         }catch (Exception e){
             e.printStackTrace();
         }
