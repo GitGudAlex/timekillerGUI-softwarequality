@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 public class TimeKillerApplication extends Application {
     private Scene scene;
     private boolean showAlert = true;
+    private String databaseName = "test_timekiller.db";
 
     @Override
 
@@ -52,7 +53,7 @@ public class TimeKillerApplication extends Application {
         stage.setScene(scene);
         stage.show();
 
-        ITaskList taskList = new TaskListImpl();
+        ITaskList taskList = new TaskListImpl(databaseName);
 
         ((GuiController) fxmlLoader.getController()).setInput(taskList);
         ((GuiController) fxmlLoader.getController()).switchToDataInput();

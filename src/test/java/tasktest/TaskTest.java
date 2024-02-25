@@ -11,7 +11,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class TaskTest {
-
+    /**
+     * Überprüft die Erstellung eines Tasks mit einem gegebenen Namen.
+     */
     @Test
     public void testCreateTaskWithName() throws IllegalNameException {
         String taskName = "TestTask";
@@ -20,6 +22,9 @@ public class TaskTest {
         assertEquals(taskName, task.getName());
     }
 
+    /**
+     * Überprüft die Erstellung eines Tasks mit einer gegebenen ID und einem Namen.
+     */
     @Test
     public void testCreateTaskWithIdAndName() throws IllegalNameException {
         int taskId = 1;
@@ -30,6 +35,9 @@ public class TaskTest {
         assertEquals(taskName, task.getName());
     }
 
+    /**
+     * Überprüft die Änderung des Namens eines Tasks.
+     */
     @Test
     public void testSetName() throws IllegalNameException {
         Task task = new Task("OldName");
@@ -40,6 +48,9 @@ public class TaskTest {
         assertEquals(newName, task.getName());
     }
 
+    /**
+     * Überprüft das Starten und Stoppen eines Tasks.
+     */
     @Test
     public void testStartAndStop() throws IllegalNameException {
         Task task = new Task("TestTask3");
@@ -51,6 +62,9 @@ public class TaskTest {
         assertFalse(task.isActive());
     }
 
+    /**
+     * Überprüft das Abrufen der Gesamtdauer eines Tasks.
+     */
     @Test
     public void testGetOverallDuration() throws IllegalNameException {
         Task task = new Task("TestTask4");
@@ -63,6 +77,9 @@ public class TaskTest {
         assertEquals(1000L, task.getOverallLifetimeDuration());
     }
 
+    /**
+     * Überprüft das Abrufen der Gesamtdauer eines Tasks für einen bestimmten Zeitraum.
+     */
     @Test
     public void testGetOverallDurationWithTimeRange() throws IllegalNameException {
         Task task = new Task("TestTask5");

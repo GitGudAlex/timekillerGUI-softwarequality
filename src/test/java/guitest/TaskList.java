@@ -1,7 +1,10 @@
 package guitest;
 import de.hdm.bd.timekiller.TimeKillerApplication;
 
+import de.hdm.bd.timekiller.model.task.DbManager;
+import de.hdm.bd.timekiller.model.task.ITaskList;
 import de.hdm.bd.timekiller.model.task.Task;
+import de.hdm.bd.timekiller.model.task.TaskListImpl;
 import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -9,6 +12,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.api.FxRobot;
@@ -37,6 +41,24 @@ public class TaskList {
 
     private static final TimeKillerApplication timeKiller = new TimeKillerApplication();
     private static final Logger logger = Logger.getLogger(TaskList.class.getName());
+    private static DbManager dbManager;
+    private static ITaskList taskList;
+    private static String databaseName = "test_timekiller.db";
+
+
+    @BeforeAll
+    public static void setUp() throws Exception {
+        dbManager = new DbManager(databaseName);
+        dbManager.dropTables();
+
+        taskList = new TaskListImpl(databaseName);
+
+        String[] tasks = {"Arbeit", "Sport", "Studium", "Yoga"};
+        for (String task : tasks) {
+            taskList.insertTask(task);
+        }
+
+    }
 
     @Start
     public void start(Stage stage) throws Exception {
@@ -49,7 +71,6 @@ public class TaskList {
     @Test
     void initialStateOfTaskList(FxRobot robot) {
         ListView lv = robot.lookup("#listView").queryAs(ListView.class);
-        //Arbeit, Sport, Studium, Yoga
         Assertions.assertThat(lv).hasExactlyNumItems(4);
 
     }
@@ -174,7 +195,7 @@ public class TaskList {
         for (int i = 0; i <= 2; i++) {
             System.out.println("Zahl: " + i);
             Set<Node> deleteButtons = robot.lookup(".deleteButton").queryAll();
-            assertEquals(4-i, deleteButtons.size());
+            assertEquals(5-i, deleteButtons.size());
             Node deleteButton = deleteButtons.toArray(new Node[0])[1];
             robot.clickOn(deleteButton);
             //Bestätigen

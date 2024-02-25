@@ -47,5 +47,6 @@ public class PieChartHelperTest {
         assertEquals(2, entries.size());
         assertEquals("test1", entries.get(0).getName());
         assertEquals("test2", entries.get(1).getName());
+        //Datum
     }
 }

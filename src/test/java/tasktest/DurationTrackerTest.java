@@ -1,6 +1,7 @@
 package tasktest;
 
 import de.hdm.bd.timekiller.model.task.DurationTracker;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Date;
@@ -10,10 +11,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 public class DurationTrackerTest {
+        private DurationTracker durationTracker;
 
+        @BeforeEach
+        public void setUp(){
+                durationTracker = new DurationTracker();
+        }
         @Test
         public void testSetStart() {
-                DurationTracker durationTracker = new DurationTracker();
                 long currentTime = new Date().getTime();
                 durationTracker.setStart(currentTime);
                 assertEquals(currentTime, durationTracker.getStartTime());
@@ -21,7 +26,6 @@ public class DurationTrackerTest {
 
         @Test
         public void testSetEnd() {
-                DurationTracker durationTracker = new DurationTracker();
                 long currentTime = new Date().getTime();
                 durationTracker.setEnd(currentTime);
                 assertEquals(currentTime, durationTracker.getEndTime());
@@ -30,7 +34,6 @@ public class DurationTrackerTest {
 
         @Test
         public void testStartAndStopMethods() {
-                DurationTracker durationTracker = new DurationTracker();
                 assertEquals(0, durationTracker.getStartTime());
                 assertEquals(0, durationTracker.getEndTime());
                 assertEquals(0, durationTracker.getDuration());
