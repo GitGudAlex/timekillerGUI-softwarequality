@@ -56,7 +56,9 @@ dependencies {
 }
 
 test {
-    useJUnitPlatform()
+    useJUnitPlatform{
+        excludeTags "excludeForJenkins"
+    }
     systemProperties = [
             'junit.jupiter.execution.parallel.enabled': 'false',
             'junit.jupiter.execution.parallel.mode.default': 'same_thread'

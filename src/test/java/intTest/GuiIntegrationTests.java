@@ -42,16 +42,14 @@ public class GuiIntegrationTests {
 
     private static final TimeKillerApplication timeKiller = new TimeKillerApplication();
     private static final Logger logger = Logger.getLogger(GuiIntegrationTests.class.getName());
-    private static DbManager dbManager;
-    private static ITaskList taskList;
-    private static String databaseName = "test_timekiller.db";
 
     @BeforeAll
     public static void setUp() throws Exception {
-        dbManager = new DbManager(databaseName);
+        String databaseName = "test_timekiller.db";
+        DbManager dbManager = new DbManager(databaseName);
         dbManager.dropTables();
 
-        taskList = new TaskListImpl(databaseName);
+        ITaskList taskList = new TaskListImpl(databaseName);
 
         String[] tasks = {"Arbeit", "Sport", "Studium", "Yoga"};
         for (String task : tasks) {
