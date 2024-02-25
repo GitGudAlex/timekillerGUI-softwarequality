@@ -84,7 +84,7 @@ public class Task {
         }
     }
 
-    private void addRecordToTask(DurationTracker record) {
+    public void addRecordToTask(DurationTracker record) {
         System.out.println("addRecordToTask");
         getRecords().add(record);
     }

@@ -1,7 +1,6 @@
 package guitest;
 import de.hdm.bd.timekiller.TimeKillerApplication;
-import de.hdm.bd.timekiller.customExceptions.IllegalNameException;
-import de.hdm.bd.timekiller.model.task.DbManager;
+
 import de.hdm.bd.timekiller.model.task.Task;
 import javafx.application.Platform;
 import javafx.scene.Node;
@@ -9,8 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.api.FxRobot;
@@ -19,11 +17,7 @@ import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 import org.testfx.util.WaitForAsyncUtils;
 import javafx.scene.chart.PieChart;
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+
 import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.List;

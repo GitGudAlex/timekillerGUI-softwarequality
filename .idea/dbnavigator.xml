@@ -31,6 +31,7 @@ from
 select * from durationtracker;]]></console>
     </connection>
     <connection id="3b536475-d412-4124-97ec-16afd3e27a2e">
+      <console name="Connection 1" type="STANDARD" schema="" session="Main" />
       <console name="TestDB" type="STANDARD" schema="" session="Main"><![CDATA[select
     *
 from
@@ -48,9 +49,7 @@ select task from durationtracker;]]></console>
     <last-used-providers />
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
-    <open-files>
-      <object connection-id="3b536475-d412-4124-97ec-16afd3e27a2e" object-ref="consoles/TestDB" />
-    </open-files>
+    <open-files />
   </component>
   <component name="DBNavigator.Project.DatabaseSessionManager">
     <connection id="da44517a-d8ac-4470-a2b8-01b5fc3b3ae0" />

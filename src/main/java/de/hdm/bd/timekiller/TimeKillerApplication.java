@@ -1,16 +1,9 @@
 package de.hdm.bd.timekiller;
 
-import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.jdbc.JdbcConnectionSource;
-import com.j256.ormlite.support.ConnectionSource;
 import de.hdm.bd.timekiller.ctrl.GuiController;
-import de.hdm.bd.timekiller.customExceptions.IllegalNameException;
 import de.hdm.bd.timekiller.model.task.DbManager;
-import de.hdm.bd.timekiller.model.task.Task;
 import de.hdm.bd.timekiller.model.task.TaskListImpl;
 import de.hdm.bd.timekiller.model.task.ITaskList;
-import java.io.IOException;
-import java.util.List;
 import java.util.Optional;
 
 import javafx.application.Application;
@@ -22,27 +15,32 @@ import javafx.stage.Stage;
 
 public class TimeKillerApplication extends Application {
     private Scene scene;
-    private boolean createNewDatabase;
+    private boolean showAlert = true;
 
     @Override
 
     public void start(Stage stage) throws Exception {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Neue Datenbank erstellen?");
-        alert.setHeaderText(null);
-        alert.setContentText("Möchten Sie eine neue Datenbank erstellen?");
+        if (showAlert){
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Neue Datenbank erstellen?");
+            alert.setHeaderText(null);
+            alert.setContentText("Möchten Sie eine neue Datenbank erstellen?");
 
-        ButtonType yesButton = new ButtonType("Ja");
-        ButtonType noButton = new ButtonType("Nein");
-        alert.getButtonTypes().setAll(yesButton, noButton);
+            ButtonType yesButton = new ButtonType("Ja");
+            ButtonType noButton = new ButtonType("Nein");
+            alert.getButtonTypes().setAll(yesButton, noButton);
 
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.isPresent() && result.get() == yesButton){
-            createNewDatabase = true;
-            DbManager dbManager = new DbManager();
-            dbManager.dropTables();
-        } else {
-            createNewDatabase = false;
+            Optional<ButtonType> result = alert.showAndWait();
+            boolean createNewDatabase;
+            if (result.isPresent() && result.get() == yesButton){
+                createNewDatabase = true;
+                DbManager dbManager = new DbManager();
+                dbManager.dropTables();
+                showAlert = false;
+            } else {
+                createNewDatabase = false;
+                showAlert = false;
+            }
         }
 
         FXMLLoader fxmlLoader =
