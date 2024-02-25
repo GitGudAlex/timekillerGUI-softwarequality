@@ -1,4 +1,4 @@
-package tasktest;
+package exceptiontest;
 
 import de.hdm.bd.timekiller.customExceptions.DuplicatedNameException;
 import de.hdm.bd.timekiller.customExceptions.IllegalNameException;

@@ -1,4 +1,4 @@
-package guitest;
+package intTest;
 import de.hdm.bd.timekiller.TimeKillerApplication;
 
 import de.hdm.bd.timekiller.model.task.DbManager;
@@ -13,7 +13,7 @@ import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.api.FxRobot;
@@ -36,12 +36,12 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@Disabled
+@Tag("excludeForJenkins")
 @ExtendWith(ApplicationExtension.class)
-public class TaskList {
+public class GuiIntegrationTests {
 
     private static final TimeKillerApplication timeKiller = new TimeKillerApplication();
-    private static final Logger logger = Logger.getLogger(TaskList.class.getName());
+    private static final Logger logger = Logger.getLogger(GuiIntegrationTests.class.getName());
     private static DbManager dbManager;
     private static ITaskList taskList;
     private static String databaseName = "test_timekiller.db";
@@ -80,7 +80,6 @@ public class TaskList {
         ListView lv = robot.lookup("#listView").queryAs(ListView.class);
         List<Task> tasks = lv.getItems();
         Task task = getTaskForName(tasks, "Arbeit");
-
 
         // Mausklick und isActive() nur überprüfen, wenn der Task gefunden wird
         if (task != null) {

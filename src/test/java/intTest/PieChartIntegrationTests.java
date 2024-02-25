@@ -1,4 +1,4 @@
-package dbtest;
+package intTest;
 
 import de.hdm.bd.timekiller.ctrl.PieChartHelper;
 
@@ -12,7 +12,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.chart.PieChart;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 
@@ -24,7 +24,8 @@ import java.util.Collection;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class PieChartHelperTest {
+@Tag("excludeForJenkins")
+public class PieChartIntegrationTests {
     private Connection conn;
     private PieChartHelper pieChartHelper;
     private ITaskList taskList;
@@ -77,7 +78,6 @@ public class PieChartHelperTest {
      * Round Trip
      * Auslesen der Tasks aus der Datenbank für das Kuchendiagramm
      */
-    @Disabled
     @Test
     void testPieChart() throws ParseException {
         pieChartHelper.updatePieChart();
