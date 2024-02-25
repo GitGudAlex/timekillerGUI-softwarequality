@@ -1,5 +1,7 @@
 package dbtest;
 
+import de.hdm.bd.timekiller.customExceptions.DuplicatedNameException;
+import de.hdm.bd.timekiller.customExceptions.IllegalNameException;
 import de.hdm.bd.timekiller.model.task.DbManager;
 import de.hdm.bd.timekiller.model.task.DurationTracker;
 import de.hdm.bd.timekiller.model.task.ITaskList;
@@ -116,7 +118,17 @@ public class RoundTripTaskList {
      * Entfernen einer Task (und ihrer Duration-Tracker-Objekte) aus der Task-Liste
      */
     @Test
-    public void deleteTaskWithDurationTracker() throws SQLException {
+    public void deleteTaskWithDurationTracker()
+            throws SQLException, IllegalNameException, DuplicatedNameException {
+        Task task = new Task("deleteMe");
+        task.start();
+        try {
+            Thread.sleep(2000);
+            task.stop();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        taskList.insertTask(task.getName());
 
         //Task aus DB holen
         List<Task> deleteMeTask = dbManager.getTaskDao().queryForEq("name", "deleteMe");

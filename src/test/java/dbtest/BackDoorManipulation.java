@@ -74,9 +74,7 @@ public class BackDoorManipulation {
         try {
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM task WHERE name = 'Task 1'");
-            while (rs.next()) {
-                taskId = rs.getInt("id");
-            }
+            taskId = rs.getInt("id");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

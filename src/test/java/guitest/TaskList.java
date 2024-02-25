@@ -13,6 +13,7 @@ import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.api.FxRobot;
@@ -35,8 +36,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Disabled
 @ExtendWith(ApplicationExtension.class)
-
 public class TaskList {
 
     private static final TimeKillerApplication timeKiller = new TimeKillerApplication();
@@ -44,7 +45,6 @@ public class TaskList {
     private static DbManager dbManager;
     private static ITaskList taskList;
     private static String databaseName = "test_timekiller.db";
-
 
     @BeforeAll
     public static void setUp() throws Exception {

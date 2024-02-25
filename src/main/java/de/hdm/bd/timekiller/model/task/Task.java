@@ -22,12 +22,13 @@ public class Task {
     @ForeignCollectionField
     private Collection<DurationTracker> records = new ArrayList<>();
     private DurationTracker activeRecord;
+    private DbManager dbManager;
 
-    public Task() {
+    public Task() throws Exception {
+        dbManager = new DbManager("test_timekiller.db");
     }
 
     public Task(String name) throws IllegalNameException {
-        this();
         if(!checkName(name)) {
             throw new IllegalNameException(name);
         }
@@ -106,21 +107,26 @@ public class Task {
     public long getOverallLifetimeDuration() {
         long result = 0;
         for (DurationTracker record : records) {
+            System.out.println("For Loop DurationTracker Lifetime: "+ record);
             result = result + record.getDuration();
         }
+        System.out.println("getOverallLifetimeDuration:" + result);
         return result;
     }
 
     public long getOverallDurationForTimePeriod(Date start, Date end) {
+        System.out.println("getOverallDurationForTimePeriod: "+ start +" end: "+ end);
         long result = 0;
         long startTime = start.getTime();
         long endTime = end.getTime();
 
         for (DurationTracker record : records) {
+            System.out.println("For Loop DurationTracker TimePeriod: "+ record);
             if ((startTime <= record.getStartTime()) && endTime >= record.getEndTime()) {
                 result = result + record.getDuration();
             }
         }
+        System.out.println("getOverallDurationForTimePeriod Result: " + result);
         return result;
     }
 

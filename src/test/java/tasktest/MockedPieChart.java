@@ -66,7 +66,7 @@ public class MockedPieChart extends ApplicationTest {
     }
 
     private Task createTaskWithDuration(String name, float duration)
-            throws IllegalNameException {
+            throws Exception {
         Task task = new Task();
         task.setName(name);
         task.addRecordToTask(createDurationTrackerWithDuration(duration));
