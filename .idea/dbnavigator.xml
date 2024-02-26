@@ -752,7 +752,7 @@ select task from durationtracker;]]></console>
       <regional-settings>
         <date-format value="MEDIUM" />
         <number-format value="UNGROUPED" />
-        <locale value="SYSTEM_DEFAULT" />
+        <locale value="de_DE" />
         <use-custom-formats value="false" />
       </regional-settings>
       <environment>
