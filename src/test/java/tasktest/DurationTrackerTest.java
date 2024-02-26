@@ -9,7 +9,6 @@ import java.util.Date;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-
 public class DurationTrackerTest {
         private DurationTracker durationTracker;
 
@@ -31,6 +30,20 @@ public class DurationTrackerTest {
                 assertEquals(currentTime, durationTracker.getEndTime());
         }
 
+        @Test
+        public void testStartMethod() {
+                //Vor dem Starten überprüfen, ob die Startzeit 0 ist
+                assertEquals(0, durationTracker.getStartTime());
+
+                //Starten der Zeitverfolgung
+                durationTracker.start();
+
+                //Nach dem Starten überprüfen, ob die Startzeit aktualisiert wurde
+                long startTime = durationTracker.getStartTime();
+
+                //Überprüfen, ob die Startzeit größer als 0 ist
+                assertTrue(startTime > 0, "Startzeit sollte größer als 0 sein.");
+        }
 
         @Test
         public void testStartAndStopMethods() {
