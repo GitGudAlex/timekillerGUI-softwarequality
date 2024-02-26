@@ -21,7 +21,7 @@ public class Task {
     private boolean active;
     @ForeignCollectionField
     private Collection<DurationTracker> records = new ArrayList<>();
-    private DurationTracker activeRecord;
+    public DurationTracker activeRecord;
     private DbManager dbManager;
 
     public Task() throws Exception {

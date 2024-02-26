@@ -96,4 +96,37 @@ public class TaskTest {
 
         assertEquals(2000L, task.getOverallDurationForTimePeriod(startTime, endTime));
     }
+
+    @Test
+    public void testNewTaskIsInactive() throws IllegalNameException {
+        Task task = new Task("NewTask");
+        assertFalse(task.isActive());
+        assertTrue(task.getRecords().isEmpty());
+        assertNull(task.activeRecord);
+    }
+
+    @Test
+    public void testTaskActivatesAfterStart() throws IllegalNameException {
+        Task task = new Task("TestTask");
+        task.start();
+        assertTrue(task.isActive());
+        assertNotNull(task.activeRecord);
+    }
+
+    @Test
+    public void testTaskCompletesAfterStop() throws IllegalNameException {
+        Task task = new Task("TestTask");
+        task.start();
+        task.stop();
+        assertFalse(task.isActive());
+        assertNotNull(task.activeRecord);
+    }
+
+    @Test
+    public void testTaskRemainsInactiveAfterCreation() throws IllegalNameException {
+        Task task = new Task("TestTask");
+        assertFalse(task.isActive());
+        assertTrue(task.getRecords().isEmpty());
+        assertNull(task.activeRecord);
+    }
 }
