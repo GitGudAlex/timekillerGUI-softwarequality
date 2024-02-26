@@ -74,11 +74,22 @@ public class DurationTracker {
     }
 
     public void start() {
-        System.out.println("DurationTracker start");
+        if (start != null) {
+            throw new IllegalStateException("DurationTracker is already started.");
+        }
+        if (end != null) {
+            throw new IllegalStateException("DurationTracker was already stopped.");
+        }
         setStart(getCurrentDate().getTime());
     }
 
     public void stop() {
+        if (end != null) {
+            throw new IllegalStateException("DurationTracker is already stopped.");
+        }
+        if (start == null) {
+            throw new IllegalStateException("DurationTracker was never started.");
+        }
         setEnd(getCurrentDate().getTime());
     }
 }

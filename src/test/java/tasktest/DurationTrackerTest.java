@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DurationTrackerTest {
@@ -43,6 +44,9 @@ public class DurationTrackerTest {
 
                 //Überprüfen, ob die Startzeit größer als 0 ist
                 assertTrue(startTime > 0, "Startzeit sollte größer als 0 sein.");
+
+                //Versuche erneut zu starten und überprüfe, ob eine Ausnahme geworfen wird
+                assertThrows(IllegalStateException.class, () -> durationTracker.start());
         }
 
         @Test
@@ -67,6 +71,41 @@ public class DurationTrackerTest {
                         "Startzeit sollte vor der Endzeit liegen.");
                 assertTrue(duration > 0,
                         "Die Dauer sollte größer oder gleich 0 sein.");
+        }
+
+        @Test
+        public void testStopMethodWhenAlreadyStopped() {
+                //Simuliere, dass der Task bereits gestoppt wurde
+                durationTracker.setStart(System.currentTimeMillis());
+                durationTracker.setEnd(System.currentTimeMillis());
+
+                //Überprüfe, ob eine Ausnahme geworfen wird, wenn versucht wird, den gestoppten Task erneut zu stoppen
+                assertThrows(IllegalStateException.class, () -> durationTracker.stop());
+        }
+
+        @Test
+        public void testStopMethodWhenNeverStarted() {
+                //Überprüfe, ob eine Ausnahme geworfen wird, wenn versucht wird, einen nie gestarteten Task zu stoppen
+                assertThrows(IllegalStateException.class, () -> durationTracker.stop());
+        }
+
+        @Test
+        public void testStartMethodWhenAlreadyStarted() {
+                // Simuliere, dass der Task bereits gestartet wurde
+                durationTracker.start();
+
+                // Überprüfe, ob eine Ausnahme geworfen wird, wenn versucht wird, den gestarteten Task erneut zu starten
+                assertThrows(IllegalStateException.class, () -> durationTracker.start());
+        }
+
+        @Test
+        public void testStartMethodWhenAlreadyStopped() {
+                // Simuliere, dass der Task bereits gestoppt wurde
+                durationTracker.setStart(System.currentTimeMillis());
+                durationTracker.setEnd(System.currentTimeMillis());
+
+                // Überprüfe, ob eine Ausnahme geworfen wird, wenn versucht wird, den gestoppten Task zu starten
+                assertThrows(IllegalStateException.class, () -> durationTracker.start());
         }
 
 
