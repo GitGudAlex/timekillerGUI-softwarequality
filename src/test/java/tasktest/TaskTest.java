@@ -1,4 +1,5 @@
 package tasktest;
+
 import de.hdm.bd.timekiller.customExceptions.IllegalNameException;
 import de.hdm.bd.timekiller.model.task.DurationTracker;
 import de.hdm.bd.timekiller.model.task.Task;
@@ -81,11 +82,13 @@ public class TaskTest {
      * Überprüft das Abrufen der Gesamtdauer eines Tasks für einen bestimmten Zeitraum.
      */
     @Test
-    public void testGetOverallDurationWithTimeRange() throws IllegalNameException {
+    public void testGetOverallDurationWithTimeRange()
+            throws IllegalNameException {
         Task task = new Task("TestTask5");
 
         DurationTracker mockDurationTracker = mock(DurationTracker.class);
-        when(mockDurationTracker.getStartTime()).thenReturn(new Date().getTime() - 2000L);
+        when(mockDurationTracker.getStartTime()).thenReturn(
+                new Date().getTime() - 2000L);
         when(mockDurationTracker.getEndTime()).thenReturn(new Date().getTime());
         when(mockDurationTracker.getDuration()).thenReturn(2000L);
 
@@ -94,7 +97,8 @@ public class TaskTest {
         Date startTime = new Date(new Date().getTime() - 3000L);
         Date endTime = new Date();
 
-        assertEquals(2000L, task.getOverallDurationForTimePeriod(startTime, endTime));
+        assertEquals(2000L,
+                task.getOverallDurationForTimePeriod(startTime, endTime));
     }
 
     @Test

@@ -1,4 +1,5 @@
 package intTest;
+
 import de.hdm.bd.timekiller.TimeKillerApplication;
 
 import de.hdm.bd.timekiller.model.task.DbManager;
@@ -40,8 +41,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @ExtendWith(ApplicationExtension.class)
 public class GuiIntegrationTests {
 
-    private static final TimeKillerApplication timeKiller = new TimeKillerApplication();
-    private static final Logger logger = Logger.getLogger(GuiIntegrationTests.class.getName());
+    private static final TimeKillerApplication timeKiller =
+            new TimeKillerApplication();
+    private static final Logger logger =
+            Logger.getLogger(GuiIntegrationTests.class.getName());
 
     @BeforeAll
     public static void setUp() throws Exception {
@@ -74,7 +77,7 @@ public class GuiIntegrationTests {
     }
 
     @Test
-    void userClickReactionsTaskList(FxRobot robot){
+    void userClickReactionsTaskList(FxRobot robot) {
         ListView lv = robot.lookup("#listView").queryAs(ListView.class);
         List<Task> tasks = lv.getItems();
         Task task = getTaskForName(tasks, "Arbeit");
@@ -117,9 +120,9 @@ public class GuiIntegrationTests {
         List<PieChart.Data> chartData = pChart.getData();
         assertEquals(2, chartData.size());
         PieChart.Data entry1 = chartData.get(0);
-        assertEquals(3000, entry1.getPieValue(),100);
+        assertEquals(3000, entry1.getPieValue(), 100);
         PieChart.Data entry2 = chartData.get(1);
-        assertEquals(4000, entry2.getPieValue(),100);
+        assertEquals(4000, entry2.getPieValue(), 100);
 
         //Prüfen der Tasknamen
         assertEquals("Arbeit", entry1.getName());
@@ -142,20 +145,23 @@ public class GuiIntegrationTests {
         robot.clickOn(button);
 
         // DatePicker finden
-        DatePicker dpStart = robot.lookup("#startDatePicker").queryAs(DatePicker.class);
-        DatePicker dpEnd = robot.lookup("#endDatePicker").queryAs(DatePicker.class);
+        DatePicker dpStart =
+                robot.lookup("#startDatePicker").queryAs(DatePicker.class);
+        DatePicker dpEnd =
+                robot.lookup("#endDatePicker").queryAs(DatePicker.class);
         String date = Calendar.getInstance().get(Calendar.YEAR) + "-12-31";
 
         Platform.runLater(new Runnable() {
-        public void run() {
-            //Datum setzten
-            dpStart.setValue(LocalDate.parse(date));
-            dpEnd.setValue(LocalDate.parse(date));
-        }});
+            public void run() {
+                //Datum setzten
+                dpStart.setValue(LocalDate.parse(date));
+                dpEnd.setValue(LocalDate.parse(date));
+            }
+        });
         //angezeigte Werte überprüfen
         WaitForAsyncUtils.sleep(1, TimeUnit.SECONDS);
-        assertEquals(LocalDate.parse(date),dpStart.getValue());
-        assertEquals(LocalDate.parse(date),dpEnd.getValue());
+        assertEquals(LocalDate.parse(date), dpStart.getValue());
+        assertEquals(LocalDate.parse(date), dpEnd.getValue());
     }
 
     @Test
@@ -165,7 +171,8 @@ public class GuiIntegrationTests {
         robot.clickOn(addButton);
         //Texteingabe in Dialogfenster
         robot.interact(() -> {
-            robot.lookup(".text-field").queryTextInputControl().setText("TestInput");
+            robot.lookup(".text-field").queryTextInputControl()
+                    .setText("TestInput");
         });
         //Bestätigen
         robot.clickOn("OK");
@@ -188,11 +195,12 @@ public class GuiIntegrationTests {
                 lv.getSelectionModel().select(yogaTask);
             }
         });
-        //nacheinander prüfen, ob eine noch nicht benutze, ein bereits benutze und eine noch aktive Task erfolgreich gelöscht werden kann
+        //nacheinander prüfen, ob eine noch nicht benutze,
+        // ein bereits benutze und eine noch aktive Task erfolgreich gelöscht werden kann
         for (int i = 0; i <= 2; i++) {
             System.out.println("Zahl: " + i);
             Set<Node> deleteButtons = robot.lookup(".deleteButton").queryAll();
-            assertEquals(5-i, deleteButtons.size());
+            assertEquals(5 - i, deleteButtons.size());
             Node deleteButton = deleteButtons.toArray(new Node[0])[1];
             robot.clickOn(deleteButton);
             //Bestätigen
@@ -209,7 +217,8 @@ public class GuiIntegrationTests {
             robot.clickOn(editButton);
             //Texteingabe in Dialogfenster
             robot.interact(() -> {
-               robot.lookup(".text-field").queryTextInputControl().setText("neuerName");
+                robot.lookup(".text-field").queryTextInputControl()
+                        .setText("neuerName");
             });
             //Bestätigen
             robot.clickOn("OK");
@@ -221,7 +230,7 @@ public class GuiIntegrationTests {
                 ListView lv = robot.lookup("#listView").queryAs(ListView.class);
                 List<Task> tasks = lv.getItems();
                 assertNull(getTaskForName(tasks, "Sport"));
-                assertNotNull(getTaskForName(tasks,"neuerName"));
+                assertNotNull(getTaskForName(tasks, "neuerName"));
             }
         });
 
@@ -229,7 +238,7 @@ public class GuiIntegrationTests {
     }
 
 
-    private void startTasks(ListView lv){
+    private void startTasks(ListView lv) {
 
         List<Task> tasks = lv.getItems();
         Task task1 = getTaskForName(tasks, "Arbeit");

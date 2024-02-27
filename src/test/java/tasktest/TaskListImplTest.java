@@ -32,6 +32,7 @@ public class TaskListImplTest {
         dbManager = new DbManager(databaseName);
         list = new TaskListImpl(databaseName);
     }
+
     @AfterEach
     public void dropTables() throws SQLException {
         dbManager.dropTables();
@@ -44,7 +45,7 @@ public class TaskListImplTest {
     @Test
     public void insertTaskTest()
             throws DuplicatedNameException, IllegalNameException {
-        int taskId= list.insertTask("Turnen");
+        int taskId = list.insertTask("Turnen");
         assertEquals("Turnen", list.getTask(taskId).toString());
     }
 
@@ -54,7 +55,7 @@ public class TaskListImplTest {
             throws IllegalNameException, DuplicatedNameException {
         list.insertTask("Studium");
 
-        Exception exception = assertThrows(DuplicatedNameException.class, () -> {
+        assertThrows(DuplicatedNameException.class, () -> {
             list.insertTask("Studium");
         });
 
@@ -63,14 +64,15 @@ public class TaskListImplTest {
     //3. Ungültiger Task: "3" -> throw IllegalName Exception
     @Test
     public void insertInvalidTaskTest() throws IllegalNameException {
-        Exception exception = assertThrows(IllegalNameException.class, () -> list.insertTask("3"));
+        assertThrows(IllegalNameException.class, () -> list.insertTask("3"));
     }
 
     /**
      * Testfälle Update-Methode:
      */
     @Test
-    public void updateTaskValidNameTest() throws DuplicatedNameException, IllegalNameException {
+    public void updateTaskValidNameTest()
+            throws DuplicatedNameException, IllegalNameException {
         int taskId = list.insertTask("Turnen");
         Task updatedTask = new Task(taskId, "Joggen");
 
@@ -78,8 +80,10 @@ public class TaskListImplTest {
 
         assertEquals("Joggen", list.getTask(taskId).toString());
     }
+
     @Test
-    public void updateTaskInvalidNameTest() throws DuplicatedNameException, IllegalNameException {
+    public void updateTaskInvalidNameTest()
+            throws DuplicatedNameException, IllegalNameException {
         // Mock für die Task-Klasse erstellen
         Task mockTask = Mockito.mock(Task.class);
 
@@ -87,23 +91,26 @@ public class TaskListImplTest {
         when(mockTask.getId()).thenReturn(1);
         when(mockTask.getName()).thenReturn("4");
         // Die updateTask-Methode aufrufen und Exception abfangen
-         assertThrows(IllegalNameException.class, () -> {
+        assertThrows(IllegalNameException.class, () -> {
             list.updateTask(mockTask);
         });
     }
+
     @Test
-    public void updateTaskDuplicateNameTest() throws DuplicatedNameException, IllegalNameException {
+    public void updateTaskDuplicateNameTest()
+            throws DuplicatedNameException, IllegalNameException {
         int taskId1 = list.insertTask("Turnen");
-        int taskId2 = list.insertTask("Schwimmen");
+        list.insertTask("Schwimmen");
 
         Task updatedTask = new Task(taskId1, "Schwimmen");
 
-     assertThrows(DuplicatedNameException.class, () -> list.updateTask(updatedTask));
+        assertThrows(DuplicatedNameException.class,
+                () -> list.updateTask(updatedTask));
 
     }
 
     /**
-     *Testfälle Remove-Methode:
+     * Testfälle Remove-Methode:
      */
     @Test
     public void deleteTaskValidTest()
@@ -116,9 +123,8 @@ public class TaskListImplTest {
     }
 
     @Test
-    public void deleteTaskInvalidTest()
-            throws DuplicatedNameException, IllegalNameException {
-        int taskId = list.insertTask("Turnen");
+    public void deleteTaskInvalidTest() throws DuplicatedNameException, IllegalNameException {
+        list.insertTask("Turnen");
 
         // Ungültige Eingabe: Löscht eine nicht existierende Aufgabe
         Task nonExistingTask = new Task(999, "NonExistingTask");

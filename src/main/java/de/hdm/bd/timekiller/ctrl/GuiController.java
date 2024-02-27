@@ -12,8 +12,6 @@ import java.util.Calendar;
 import java.util.Optional;
 
 import de.hdm.bd.timekiller.model.utils.DateUtils;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.css.PseudoClass;
@@ -38,58 +36,45 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.text.Font;
-import javafx.stage.Stage;
 import javafx.util.Callback;
 
 public class GuiController {
+    private static final PseudoClass DEFAULT_BACKGROUND_CLASS =
+            PseudoClass.getPseudoClass("default");
+    private static final PseudoClass HIGHLIGHTED_BACKGROUND_CLASS =
+            PseudoClass.getPseudoClass("active");
+    private static ITaskList taskList;
     @FXML
     private ListView<Task> listView;
-
     @FXML
     private PieChart pieChart;
-
     @FXML
     private DatePicker startDatePicker;
-
     @FXML
     private DatePicker endDatePicker;
-
     private PieChartHelper helper;
-
     @FXML
     private AnchorPane aPane;
-
-    private static ITaskList taskList;
-
     private ObservableList<Task> items;
-
     @FXML
     private AnchorPane dataInputListView;
     @FXML
     private AnchorPane evaluationGridPane;
 
-    private static final PseudoClass DEFAULT_BACKGROUND_CLASS = PseudoClass.getPseudoClass("default");
-    private static final PseudoClass HIGHLIGHTED_BACKGROUND_CLASS = PseudoClass.getPseudoClass("active");
-
     public void setInput(ITaskList taskList) throws Exception {
         this.taskList = taskList;
-        items = FXCollections.observableArrayList (taskList.getAllTasks());
+        items = FXCollections.observableArrayList(taskList.getAllTasks());
         listView.setItems(items);
 
-        listView.getSelectionModel().selectedItemProperty().addListener(
-                new ChangeListener<Task>() {
-                    @Override
-                    public void changed(ObservableValue<? extends Task> observable, Task oldValue,
-                                        Task newValue) {
-
-                        if(newValue != null) {
-                            if (newValue.isActive()) {
-                                System.out.println("newValue stop");
-                                newValue.stop();
-                            } else {
-                                System.out.println("newValue Start: "+ newValue);
-                                newValue.start();
-                            }
+        listView.getSelectionModel().selectedItemProperty()
+                .addListener((observable, oldValue, newValue) -> {
+                    if (newValue != null) {
+                        if (newValue.isActive()) {
+                            System.out.println("newValue stop");
+                            newValue.stop();
+                        } else {
+                            System.out.println("newValue Start: " + newValue);
+                            newValue.start();
                         }
                     }
                 });
@@ -98,63 +83,9 @@ public class GuiController {
         helper = new PieChartHelper(pieChart, taskList);
 
 
-    };
-
-    public class TaskListCellFactory implements Callback<ListView<Task>, ListCell<Task>> {
-
-        @Override
-        public ListCell<Task> call(ListView<Task> param) {
-            ListCell<Task> cell = new TaskListCell();
-            cell.setOnMousePressed((MouseEvent event) -> {
-                param.getSelectionModel().clearSelection();
-            });
-            return cell;
-        }
     }
 
-    public final class TaskListCell extends ListCell<Task> {
-        @Override
-        public void updateItem(Task task, boolean empty) {
-            super.updateItem(task, empty);
-            if (empty || task == null) {
-                setText(null);
-                setGraphic(null);
-
-            } else {
-                if(!task.isActive()) {
-                    pseudoClassStateChanged(HIGHLIGHTED_BACKGROUND_CLASS, false);
-                    pseudoClassStateChanged(DEFAULT_BACKGROUND_CLASS, true);
-                } else {
-                    pseudoClassStateChanged(HIGHLIGHTED_BACKGROUND_CLASS, true);
-                    pseudoClassStateChanged(DEFAULT_BACKGROUND_CLASS, false);
-                }
-                Label descriptionLabel = new Label(task.toString());
-                HBox hBox = new HBox();
-                hBox.setAlignment(Pos.CENTER);
-                hBox.getChildren().add(descriptionLabel);
-                descriptionLabel.setFont(new Font(14));
-
-                Button editButton = new Button("", new ImageView("de/hdm/bd/timekiller/img/icons8-edit-24.png"));
-                editButton.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-                editButton.setMaxSize(30, 30);
-                editButton.setMinSize(30, 30);
-                editButton.setOnAction(event -> editTask(task));
-                editButton.getStyleClass().add("editButton");
-
-
-                Button deleteButton = new Button("", new ImageView("de/hdm/bd/timekiller/img/icons8-delete-24.png"));
-                deleteButton.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-                deleteButton.setMaxSize(30, 30);
-                deleteButton.setMinSize(30, 30);
-                deleteButton.setOnAction(event -> deleteTask(task));
-                deleteButton.getStyleClass().add("deleteButton");
-
-                Region region = new Region();
-                HBox.setHgrow(region, Priority.ALWAYS);
-                setGraphic(new HBox(hBox, region, editButton, deleteButton));
-            }
-        }
-    }
+    ;
 
     //Button-Methoden
     @FXML
@@ -214,7 +145,8 @@ public class GuiController {
         });
     }
 
-    private void refreshTaskListView(Task task) {;
+    private void refreshTaskListView(Task task) {
+        ;
         System.out.println("task " + task);
         listView.getItems().add(task);
     }
@@ -227,7 +159,6 @@ public class GuiController {
         listView.getItems().remove(task);
         listView.getItems().add(task);
     }
-
 
     @FXML
     public void switchToDataInput() {
@@ -243,8 +174,7 @@ public class GuiController {
 
         //StartDatePicker
         EventHandler<ActionEvent> startEvent = new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent e)
-            {
+            public void handle(ActionEvent e) {
                 // get the date picker value
                 LocalDate i = startDatePicker.getValue();
                 helper.setStartDate(DateUtils.startAsDate(i));
@@ -263,8 +193,7 @@ public class GuiController {
 
         //EndDatePicker
         EventHandler<ActionEvent> endEvent = new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent e)
-            {
+            public void handle(ActionEvent e) {
                 // get the date picker value
                 LocalDate i = endDatePicker.getValue();
                 helper.setEndDate(DateUtils.endAsDate(i));
@@ -277,6 +206,66 @@ public class GuiController {
         endDatePicker.setOnAction(endEvent);
         LocalDate currentDate = LocalDate.now();
         endDatePicker.setValue(currentDate);
+    }
+
+    public class TaskListCellFactory
+            implements Callback<ListView<Task>, ListCell<Task>> {
+
+        @Override
+        public ListCell<Task> call(ListView<Task> param) {
+            ListCell<Task> cell = new TaskListCell();
+            cell.setOnMousePressed((MouseEvent event) -> {
+                param.getSelectionModel().clearSelection();
+            });
+            return cell;
+        }
+    }
+
+    public final class TaskListCell extends ListCell<Task> {
+        @Override
+        public void updateItem(Task task, boolean empty) {
+            super.updateItem(task, empty);
+            if (empty || task == null) {
+                setText(null);
+                setGraphic(null);
+
+            } else {
+                if (!task.isActive()) {
+                    pseudoClassStateChanged(HIGHLIGHTED_BACKGROUND_CLASS,
+                            false);
+                    pseudoClassStateChanged(DEFAULT_BACKGROUND_CLASS, true);
+                } else {
+                    pseudoClassStateChanged(HIGHLIGHTED_BACKGROUND_CLASS, true);
+                    pseudoClassStateChanged(DEFAULT_BACKGROUND_CLASS, false);
+                }
+                Label descriptionLabel = new Label(task.toString());
+                HBox hBox = new HBox();
+                hBox.setAlignment(Pos.CENTER);
+                hBox.getChildren().add(descriptionLabel);
+                descriptionLabel.setFont(new Font(14));
+
+                Button editButton = new Button("", new ImageView(
+                        "de/hdm/bd/timekiller/img/icons8-edit-24.png"));
+                editButton.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+                editButton.setMaxSize(30, 30);
+                editButton.setMinSize(30, 30);
+                editButton.setOnAction(event -> editTask(task));
+                editButton.getStyleClass().add("editButton");
+
+
+                Button deleteButton = new Button("", new ImageView(
+                        "de/hdm/bd/timekiller/img/icons8-delete-24.png"));
+                deleteButton.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+                deleteButton.setMaxSize(30, 30);
+                deleteButton.setMinSize(30, 30);
+                deleteButton.setOnAction(event -> deleteTask(task));
+                deleteButton.getStyleClass().add("deleteButton");
+
+                Region region = new Region();
+                HBox.setHgrow(region, Priority.ALWAYS);
+                setGraphic(new HBox(hBox, region, editButton, deleteButton));
+            }
+        }
     }
 
 }

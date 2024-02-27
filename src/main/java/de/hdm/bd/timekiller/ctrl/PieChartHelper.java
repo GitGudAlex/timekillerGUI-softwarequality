@@ -1,13 +1,10 @@
 package de.hdm.bd.timekiller.ctrl;
 
-import de.hdm.bd.timekiller.model.task.DbManager;
 import de.hdm.bd.timekiller.model.task.ITaskList;
 import de.hdm.bd.timekiller.model.task.Task;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.PieChart;
-import de.hdm.bd.timekiller.model.task.DurationTracker;
-
 
 import java.util.Date;
 import java.util.List;
@@ -16,7 +13,6 @@ public class PieChartHelper {
     private Date startDate;
     private Date endDate;
     private PieChart pieChart;
-    private DbManager dbManager;
 
     ITaskList tasks;
 
@@ -24,7 +20,6 @@ public class PieChartHelper {
         pieChart = p;
         initPieChart();
         this.tasks = tasks;
-        this.dbManager = new DbManager();
     }
 
     public void initPieChart() {

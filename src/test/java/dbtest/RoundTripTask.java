@@ -51,6 +51,6 @@ public class RoundTripTask {
         //Überprüfen, ob ein DurationTracker gespeichert wurde
         Collection<DurationTracker> durationTrackers = task.getRecords();
         assertNotNull(durationTrackers);
-        assertEquals(1, durationTrackers.size(), "Es wurde erwartet, dass ein DurationTracker in der Datenbank gespeichert wurde");
+        assertEquals(1, durationTrackers.size());
     }
 }

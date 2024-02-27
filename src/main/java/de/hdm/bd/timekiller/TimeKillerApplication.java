@@ -35,7 +35,7 @@ public class TimeKillerApplication extends Application {
             boolean createNewDatabase;
             if (result.isPresent() && result.get() == yesButton){
                 createNewDatabase = true;
-                DbManager dbManager = new DbManager();
+                DbManager dbManager = new DbManager(databaseName);
                 dbManager.dropTables();
                 showAlert = false;
             } else {

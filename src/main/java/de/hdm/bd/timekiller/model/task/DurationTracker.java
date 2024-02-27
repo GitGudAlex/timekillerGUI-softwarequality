@@ -2,7 +2,6 @@ package de.hdm.bd.timekiller.model.task;
 
 import com.j256.ormlite.field.DatabaseField;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class DurationTracker {

@@ -1,7 +1,6 @@
 package tasktest;
 
 import de.hdm.bd.timekiller.ctrl.PieChartHelper;
-import de.hdm.bd.timekiller.customExceptions.IllegalNameException;
 import de.hdm.bd.timekiller.model.task.DurationTracker;
 import de.hdm.bd.timekiller.model.task.ITaskList;
 import de.hdm.bd.timekiller.model.task.Task;
@@ -19,9 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class MockedPieChart extends ApplicationTest {
-    private PieChart pieChart;
     private ObservableList<Task> items;
-    private PieChartHelper helper;
 
     @Override
     public void start(javafx.stage.Stage stage) {
