@@ -78,15 +78,12 @@ public class Task {
             record.start();
             activeRecord = record;
             active = true;
-            //addRecordToTask(activeRecord);
-            System.out.println("Task start");
         }else{
             System.out.println("task is already active");
         }
     }
 
     public void addRecordToTask(DurationTracker record) {
-        System.out.println("addRecordToTask");
         getRecords().add(record);
     }
 
@@ -95,7 +92,6 @@ public class Task {
             activeRecord.stop();
             active = false;
             addRecordToTask(activeRecord);
-            System.out.println("Task stopped.");
         }else{
             System.out.println("Task is not active");
         }
@@ -107,26 +103,21 @@ public class Task {
     public long getOverallLifetimeDuration() {
         long result = 0;
         for (DurationTracker record : records) {
-            System.out.println("For Loop DurationTracker Lifetime: "+ record);
             result = result + record.getDuration();
         }
-        System.out.println("getOverallLifetimeDuration:" + result);
         return result;
     }
 
     public long getOverallDurationForTimePeriod(Date start, Date end) {
-        System.out.println("getOverallDurationForTimePeriod: "+ start +" end: "+ end);
         long result = 0;
         long startTime = start.getTime();
         long endTime = end.getTime();
 
         for (DurationTracker record : records) {
-            System.out.println("For Loop DurationTracker TimePeriod: "+ record);
             if ((startTime <= record.getStartTime()) && endTime >= record.getEndTime()) {
                 result = result + record.getDuration();
             }
         }
-        System.out.println("getOverallDurationForTimePeriod Result: " + result);
         return result;
     }
 

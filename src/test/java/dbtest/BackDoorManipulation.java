@@ -46,11 +46,9 @@ public class BackDoorManipulation {
 
     @AfterEach
     public void closeDatabase() throws Exception {
-        System.out.println("closeDatabase outside if Statement");
         dbManager.dropTables();
         if (conn != null) {
             conn.close();
-            System.out.println("Conn closed");
         }
     }
 
@@ -101,7 +99,6 @@ public class BackDoorManipulation {
         // Überprüfen, ob der Eintrag erfolgreich eingefügt wurde
         ResultSet rsTracker =
                 stmt.executeQuery("SELECT * FROM durationtracker WHERE id = 3");
-        System.out.println("rsTracker: " + rsTracker.getInt("task"));
         assertEquals(3, rsTracker.getInt("task"));
         ResultSet rsTask = stmt.executeQuery("SELECT * FROM task where id = 3");
         assertTrue(rsTracker.next());

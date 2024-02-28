@@ -36,8 +36,6 @@ public class PieChartHelper {
     }
 
     public void updatePieChart() {
-        System.out.println("startDateUpdatePieChart: " + startDate);
-        System.out.println("EndDateUpdatePieChart: " + endDate);
         if (startDate != null && endDate != null) {
             pieChart.getData().clear();
             pieChart.setData(getEntries());
@@ -47,28 +45,19 @@ public class PieChartHelper {
     }
 
     public ObservableList<PieChart.Data> getEntries() {
-        System.out.println("startDateEntries: " + startDate);
-        System.out.println("endDateEntries: " + endDate);
-        System.out.println("getEntries Database");
         List<Task> taskList = tasks.getAllTasks();
-        System.out.println("taskList getEntries: "+ taskList);
         ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
-        System.out.println("ObservableList PiechartData: " + pieChartData);
         for(Task task: taskList) {
             float duration = 0;
             if(startDate != null && endDate != null) {
                 duration = task.getOverallDurationForTimePeriod(getStartDate(), getEndDate());
-                System.out.println("if zwei: " + task.getName());
-                System.out.println("if zweig duration: "+ duration);
             } else {
                 duration = task.getOverallLifetimeDuration();
-                System.out.println("else zweig: "+ task.getName());
             }
             if(duration > 0) {
                 pieChartData.add(new PieChart.Data(task.getName(), duration));
             }
         }
-        System.out.println("pieChartData: " + pieChartData);
         return pieChartData;
     }
 

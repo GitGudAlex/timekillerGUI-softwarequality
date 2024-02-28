@@ -198,7 +198,6 @@ public class GuiIntegrationTests {
         //nacheinander prüfen, ob eine noch nicht benutze,
         // ein bereits benutze und eine noch aktive Task erfolgreich gelöscht werden kann
         for (int i = 0; i <= 2; i++) {
-            System.out.println("Zahl: " + i);
             Set<Node> deleteButtons = robot.lookup(".deleteButton").queryAll();
             assertEquals(5 - i, deleteButtons.size());
             Node deleteButton = deleteButtons.toArray(new Node[0])[1];

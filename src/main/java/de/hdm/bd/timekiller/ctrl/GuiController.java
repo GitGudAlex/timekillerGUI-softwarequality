@@ -49,7 +49,7 @@ public class GuiController {
     @FXML
     private PieChart pieChart;
     @FXML
-    private DatePicker startDatePicker;
+    public DatePicker startDatePicker;
     @FXML
     private DatePicker endDatePicker;
     private PieChartHelper helper;
@@ -70,10 +70,8 @@ public class GuiController {
                 .addListener((observable, oldValue, newValue) -> {
                     if (newValue != null) {
                         if (newValue.isActive()) {
-                            System.out.println("newValue stop");
                             newValue.stop();
                         } else {
-                            System.out.println("newValue Start: " + newValue);
                             newValue.start();
                         }
                     }
@@ -103,12 +101,10 @@ public class GuiController {
                 try {
                     int taskId = taskList.insertTask(name);
                     Task task = taskList.getTask(taskId);
-                    System.out.println("task in addTask: " + task);
 
                     // Aktualisieren Sie die ListView
                     refreshTaskListView(task);
                 } catch (IllegalNameException | DuplicatedNameException e) {
-                    System.out.println(e.getMessage());
                 }
             }
         });
@@ -146,8 +142,6 @@ public class GuiController {
     }
 
     private void refreshTaskListView(Task task) {
-        ;
-        System.out.println("task " + task);
         listView.getItems().add(task);
     }
 

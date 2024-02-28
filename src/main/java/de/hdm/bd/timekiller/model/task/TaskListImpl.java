@@ -55,7 +55,6 @@ public class TaskListImpl implements ITaskList {
             }
             Task task = new Task(name);
             dbManager.getTaskDao().create(task);
-            System.out.println("insert Task taskID: "+ task.getId());
 
             return task.getId();
         } catch (SQLException e) {
@@ -66,7 +65,6 @@ public class TaskListImpl implements ITaskList {
 
     @Override
     public void updateTask(Task task) throws DuplicatedNameException, IllegalNameException {
-        System.out.println("updateTask");
         if (!checkValidName(task.getName())) {
             throw new IllegalNameException("Invalid task name.");
         }
@@ -86,7 +84,6 @@ public class TaskListImpl implements ITaskList {
 
     @Override
     public boolean deleteTask(Task task) {
-        System.out.println("deleteTask");
         try {
             //Wenn Eintrag gelöscht gibt ORMLite 1 zurück
             dbManager.deleteDurationTrackersForTask(task);
@@ -98,7 +95,6 @@ public class TaskListImpl implements ITaskList {
     }
 
     private boolean checkValidName(String name){
-        System.out.println("checkValidName");
         return name.matches("^[a-zA-Z_][a-zA-Z0-9_]*");
     }
 }

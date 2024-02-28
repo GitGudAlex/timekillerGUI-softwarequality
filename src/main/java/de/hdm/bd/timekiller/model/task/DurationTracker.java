@@ -56,7 +56,6 @@ public class DurationTracker {
     }
 
     public void setStart(long time) {
-        System.out.println("DurationTracker setStart");
         this.start = new Date(time);
     }
 
@@ -64,7 +63,6 @@ public class DurationTracker {
         this.end = new Date(time);
         if(start!= null) {
             duration = end.getTime() - start.getTime();
-            System.out.println("setEnd: " + duration);
         }
     }
 
